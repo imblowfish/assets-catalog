@@ -8,3 +8,6 @@ TODO: Write me
 - [ ] Tags and search with tags
 - [ ] Asset view in web UI
 - [ ] Users and roles
+
+Icons https://tabler-icons-tsx.deno.dev/
+Tailwind Doc https://tailwindcss.com/
