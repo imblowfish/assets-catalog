@@ -6,7 +6,15 @@
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts"
   },
+  "fmt": {
+    "exclude": [
+      "_fresh"
+    ]
+  },
   "lint": {
+    "exclude": [
+      "_fresh"
+    ],
     "rules": {
       "tags": [
         "fresh",
