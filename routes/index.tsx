@@ -44,30 +44,13 @@ const Header = () => {
 };
 
 const AssetCard = () => {
-  const images = [
-    "/abstraction.jpg",
-    "/beach.jpg",
-    "/room.jpg",
-    "/sea.jpg",
-  ];
-
-  const titles = [
-    "Beautiful beach",
-    "Calm mountains",
-    "Abstract figure",
-    "Deep blue Sea",
-  ];
-
-  const imageRandomIdx = Math.floor(Math.random() * images.length);
-  const titleRandomIdx = Math.floor(Math.random() * titles.length);
-
   return (
     <div class="select-none brightness-90 cursor-pointer flex flex-col border(gray-300 2) rounded-md hover:brightness-100">
       <img
         class="aspect-square overflow-hidden"
-        src={images[imageRandomIdx]}
+        src={"/logo.svg"}
       />
-      <p class="ml-4 py-2 text-gray-800">{titles[titleRandomIdx]}</p>
+      <p class="ml-4 py-2 text-gray-800">Some image title</p>
     </div>
   );
 };
