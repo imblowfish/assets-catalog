@@ -45,7 +45,7 @@ const Header = () => {
 
 const AssetCard = () => {
   return (
-    <div class="select-none brightness-90 cursor-pointer flex flex-col border(gray-300 2) rounded-md hover:brightness-100">
+    <div class="select-none cursor-pointer flex flex-col border(gray-300 2) rounded-md">
       <img
         class="aspect-square overflow-hidden"
         src={"/logo.svg"}
