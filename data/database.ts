@@ -18,6 +18,7 @@ await Deno.mkdir(path.dirname(databasePath), {
 });
 
 export interface Asset {
+  id: string;
   title: string;
   description: string;
   path: string;

@@ -7,7 +7,7 @@ export const handler: Handlers = {
   async GET(_req: Request, _ctx: HandlerContext) {
     const assets = [];
     for await (const entry of await Database.list({ prefix: ["assets"] })) {
-      assets.push(entry);
+      assets.push(entry.value);
     }
     return new Response(JSON.stringify(assets), {
       status: 200,
@@ -30,19 +30,21 @@ export const handler: Handlers = {
 
     try {
       const id = ulid();
-      const path = await saveToStorage(file, id);
+      const asset = {
+        id,
+        title,
+        description,
+        path: await saveToStorage(file, id),
+        type: file.type,
+      } satisfies Asset;
 
-      await Database.atomic().set(
-        ["assets", id],
-        {
-          title,
-          description,
-          path,
-          type: file.type,
-        } satisfies Asset,
-      ).commit();
+      const ok = await Database.atomic().set(["assets", id], asset).commit();
 
-      return new Response("", {
+      if (!ok) {
+        throw new Error("Error with atomic operation");
+      }
+
+      return new Response(JSON.stringify(asset), {
         status: 200,
       });
     } catch (err) {
