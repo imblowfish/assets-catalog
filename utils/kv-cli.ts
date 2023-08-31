@@ -83,8 +83,9 @@ const setCommand = new Command()
   .arguments("<path_to_database:string> <key:string> <value>")
   .action(
     async (_options, pathToDatabase: string, key: string, value: string) => {
-      if (!(await pathExists)) {
+      if (!(await pathExists(pathToDatabase))) {
         console.error(`Can't open database ${pathToDatabase}`);
+        return;
       }
 
       // @ts-expect-error `Deno.openKv` is unstable and I can't set this flag in VSCode
@@ -98,8 +99,9 @@ const getCommand = new Command()
   .description("Get value from database")
   .arguments("<path_to_database:string> <key:string>")
   .action(async (_options, pathToDatabase: string, key: string) => {
-    if (!(await pathExists)) {
+    if (!(await pathExists(pathToDatabase))) {
       console.error(`Can't open database ${pathToDatabase}`);
+      return;
     }
 
     // @ts-expect-error `Deno.openKv` is unstable and I can't set this flag in VSCode
@@ -124,8 +126,9 @@ const removeCommand = new Command()
   .description("Remove value from database")
   .arguments("<path_to_database:string> <key:string>")
   .action(async (_options, pathToDatabase: string, key: string) => {
-    if (!(await pathExists)) {
+    if (!(await pathExists(pathToDatabase))) {
       console.error(`Can't open database ${pathToDatabase}`);
+      return;
     }
 
     // @ts-expect-error `Deno.openKv` is unstable and I can't set this flag in VSCode
@@ -139,8 +142,9 @@ const listCommand = new Command()
   .description("Show all values in database")
   .arguments("<path_to_database:string>")
   .action(async (_options, pathToDatabase: string) => {
-    if (!(await pathExists)) {
+    if (!(await pathExists(pathToDatabase))) {
       console.error(`Can't open database ${pathToDatabase}`);
+      return;
     }
 
     // @ts-expect-error `Deno.openKv` is unstable and I can't set this flag in VSCode
