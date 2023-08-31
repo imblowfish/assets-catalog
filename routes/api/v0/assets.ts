@@ -1,10 +1,10 @@
-import { HandlerContext, Handlers } from "$fresh/server.ts";
+import { Handlers } from "$fresh/server.ts";
 import { ulid } from "ulid/mod.ts";
 import { Asset, Database } from "$/data/database.ts";
 import { saveToStorage } from "$/data/storage.ts";
 
 export const handler: Handlers = {
-  async GET(_req: Request, _ctx: HandlerContext) {
+  async GET(_req, _ctx) {
     const assets = [];
     for await (const entry of await Database.list({ prefix: ["assets"] })) {
       assets.push(entry.value);
@@ -14,7 +14,7 @@ export const handler: Handlers = {
     });
   },
 
-  async POST(req: Request, _ctx: HandlerContext) {
+  async POST(req, _ctx) {
     const form = await req.formData();
 
     const title = form.get("title")!.toString();
