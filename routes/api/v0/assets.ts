@@ -5,9 +5,8 @@ import { saveToStorage } from "$/data/storage.ts";
 
 export const handler: Handlers = {
   async GET(_req: Request, _ctx: HandlerContext) {
-    const entries = Database.list({ prefix: ["assets"] });
     const assets = [];
-    for await (const entry of entries) {
+    for await (const entry of await Database.list({ prefix: ["assets"] })) {
       assets.push(entry);
     }
     return new Response(JSON.stringify(assets), {
