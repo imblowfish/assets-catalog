@@ -91,7 +91,7 @@ const setCommand = new Command()
       // @ts-expect-error `Deno.openKv` is unstable and I can't set this flag in VSCode
       //                  with a multi-root workspace
       const kv = await Deno.openKv(pathToDatabase);
-      await kv.set(key.split(","), JSON.parse(value));
+      await kv.atomic().set(key.split(","), JSON.parse(value)).commit();
     },
   );
 

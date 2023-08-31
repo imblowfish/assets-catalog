@@ -32,7 +32,7 @@ export const handler: Handlers = {
       const id = ulid();
       const path = await saveToStorage(file, id);
 
-      await Database.set(
+      await Database.atomic().set(
         ["assets", id],
         {
           title,
@@ -40,7 +40,7 @@ export const handler: Handlers = {
           path,
           type: file.type,
         } satisfies Asset,
-      );
+      ).commit();
 
       return new Response("", {
         status: 200,
