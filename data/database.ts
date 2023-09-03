@@ -1,14 +1,14 @@
 import * as path from "$std/path/mod.ts";
 import { load } from "$std/dotenv/mod.ts";
 
-await load({
+const config = await load({
   envPath: ".env",
   defaultsPath: ".env.defaults",
   examplePath: ".env.example",
   export: true,
 });
 
-const databasePath = Deno.env.get("DATABASE_PATH")!;
+const databasePath = Deno.env.get("DATABASE_PATH") || config["DATABASE_PATH"];
 
 console.log("Database initialization");
 console.log(`DATABASE_PATH=${databasePath}`);
@@ -25,8 +25,6 @@ export interface Asset {
   type: string;
 }
 
-// @ts-expect-error `Deno.openKv` is unstable and I can't set this flag in VSCode
-//                  with a multi-root workspace
 const kv = await Deno.openKv(Deno.env.get("DATABASE_PATH"));
 
 export { kv as Database };

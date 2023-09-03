@@ -5,6 +5,7 @@
     "update": "deno run -A -r https://fresh.deno.dev/update .",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
+    "test": "DATABASE_PATH=./tmp/test/kv/asset-catalog STORAGE_PATH=./tmp/test/storage deno test --unstable -A",
     "utils:kv-cli": "deno run --unstable -A ./utils/kv-cli.ts"
   },
   "fmt": {

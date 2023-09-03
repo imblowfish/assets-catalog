@@ -1,13 +1,13 @@
 import { load } from "$std/dotenv/mod.ts";
 
-await load({
+const config = await load({
   envPath: ".env",
   defaultsPath: ".env.defaults",
   examplePath: ".env.example",
   export: true,
 });
 
-const storagePath = Deno.env.get("STORAGE_PATH")!;
+const storagePath = Deno.env.get("STORAGE_PATH")! || config["STORAGE_PATH"];
 
 console.log("Storage initialization");
 console.log(`STORAGE_PATH=${storagePath}`);
