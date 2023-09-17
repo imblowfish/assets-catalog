@@ -1,7 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
-import { JSX } from "preact";
 import IconSearch from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/search.tsx";
-import IconUpload from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/upload.tsx";
+import { UploadButton } from "$/islands/UploadButton.tsx";
 
 const SearchButton = () => {
   return (
@@ -12,18 +11,6 @@ const SearchButton = () => {
         placeholder="Search..."
       />
     </div>
-  );
-};
-
-const UploadButton = (props: JSX.HTMLAttributes<HTMLButtonElement>) => {
-  return (
-    <button
-      {...props}
-      class="flex flex-row cursor-pointer rounded bg-blue-300 hover:bg-blue-400 px-3 py-2"
-    >
-      <IconUpload />
-      Upload
-    </button>
   );
 };
 
