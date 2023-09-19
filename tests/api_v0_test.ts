@@ -4,6 +4,7 @@ import {
   assertEquals,
   assertExists,
   assertInstanceOf,
+  assertRejects,
 } from "$std/testing/asserts.ts";
 import * as path from "$std/path/mod.ts";
 import { Asset } from "$/data/database.ts";
@@ -22,12 +23,10 @@ const connectionInfo: ServeHandlerInfo = {
 Deno.test("/assets", async (t) => {
   const testAssetTitle = "Test asset title";
   const testAssetDescription = "Test asset description";
-  const testAssetType = "image/png";
 
   const testAssetFile = new File(
     [await Deno.readFile(`${dirname}/null.png`)],
     `${dirname}/null.png`,
-    { type: testAssetType },
   );
 
   const handler = await createHandler(manifest);
@@ -64,11 +63,14 @@ Deno.test("/assets", async (t) => {
     const jsonResp = (await resp.json()) as Asset;
 
     assertEquals(resp.status, 200);
+    assertExists(jsonResp.id);
     assertEquals(jsonResp.title, testAssetTitle);
     assertEquals(jsonResp.description, testAssetDescription);
-    assertEquals(jsonResp.type, testAssetType);
-    assertExists(jsonResp.id);
-    assertExists(jsonResp.path);
+
+    const stat = await Deno.stat(
+      `${Deno.env.get("STORAGE_PATH")!}/${jsonResp.id}`,
+    );
+    assertEquals(stat.isFile, true);
 
     asset = { ...jsonResp };
   });
@@ -120,6 +122,28 @@ Deno.test("/assets", async (t) => {
     assertEquals(asset.description, "New test asset description");
   });
 
+  await t.step("Get asset preview by id", async () => {
+    const resp = await handler(
+      new Request(
+        `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/${asset?.id}`,
+      ),
+      connectionInfo,
+    );
+
+    assertEquals(resp.status, 200);
+  });
+
+  await t.step("Get preview for a non-existent asset", async () => {
+    const resp = await handler(
+      new Request(
+        `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/nonExistentId`,
+      ),
+      connectionInfo,
+    );
+
+    assertEquals(resp.status, 404);
+  });
+
   await t.step("Delete asset by id", async () => {
     const resp = await handler(
       new Request(
@@ -131,6 +155,13 @@ Deno.test("/assets", async (t) => {
 
     assertEquals(resp.status, 200);
     assertEquals(await resp.text(), `Asset '${asset?.id}' deleted`);
+    await assertRejects(
+      () => {
+        return Deno.stat(`${Deno.env.get("STORAGE_PATH")!}/${asset?.id}`);
+      },
+      Error,
+      "No such file or directory",
+    );
   });
 
   await t.step("Get a non-existent asset", async () => {

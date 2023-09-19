@@ -30,12 +30,13 @@ export const handler: Handlers = {
 
     try {
       const id = ulid();
+
+      await saveToStorage(file, id);
+
       const asset = {
         id,
         title,
         description,
-        path: await saveToStorage(file, id),
-        type: file.type,
       } satisfies Asset;
 
       const ok = await Database.atomic().set(["assets", id], asset).commit();

@@ -16,13 +16,17 @@ await Deno.mkdir(storagePath, {
   recursive: true,
 });
 
-type PathToFileInStorage = string;
+export async function saveToStorage(file: File, id: string) {
+  return Deno.writeFile(
+    `${storagePath}/${id}`,
+    new Uint8Array(await file.arrayBuffer()),
+  );
+}
 
-export async function saveToStorage(
-  file: File,
-  id: string,
-): Promise<PathToFileInStorage> {
-  const path = `${storagePath}/${id}`;
-  await Deno.writeFile(path, new Uint8Array(await file.arrayBuffer()));
-  return path;
+export function deleteFromStorage(id: string) {
+  return Deno.remove(`${storagePath}/${id}`);
+}
+
+export function getAssetData(id: string) {
+  return Deno.readFile(`${storagePath}/${id}`);
 }

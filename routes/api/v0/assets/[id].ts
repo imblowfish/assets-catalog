@@ -1,5 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { Database } from "$/data/database.ts";
+import { deleteFromStorage } from "$/data/storage.ts";
 
 export const handler: Handlers = {
   async GET(_req, ctx) {
@@ -37,7 +38,9 @@ export const handler: Handlers = {
       ...assetChanges,
     };
 
-    const ok = await Database.atomic().check(asset).set(assetKey, modifiedAsset)
+    const ok = await Database.atomic()
+      .check(asset)
+      .set(assetKey, modifiedAsset)
       .commit();
 
     if (!ok) {
@@ -68,6 +71,12 @@ export const handler: Handlers = {
       return new Response("Error with atomic operation", {
         status: 500,
       });
+    }
+
+    try {
+      await deleteFromStorage(id);
+    } catch (_err) {
+      return new Response(`Can't delete file from storage`, { status: 500 });
     }
 
     return new Response(`Asset '${id}' deleted`, {
