@@ -23,4 +23,10 @@ export async function saveToStorage(file: File, id: string) {
   );
 }
 
+export function deleteFromStorage(id: string) {
+  return Deno.remove(`${storagePath}/${id}`);
+}
+
+export function getAssetData(id: string) {
+  return Deno.readFile(`${storagePath}/${id}`);
 }
