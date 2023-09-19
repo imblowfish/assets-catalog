@@ -1,6 +1,8 @@
 import { Head } from "$fresh/runtime.ts";
 import IconSearch from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/search.tsx";
 import { UploadButton } from "$/islands/UploadButton.tsx";
+import { AssetsGrid } from "$/components/AssetsGrid.tsx";
+import { Asset, Database } from "$/data/database.ts";
 
 const SearchButton = () => {
   return (
@@ -30,29 +32,13 @@ const Header = () => {
   );
 };
 
-const AssetCard = () => {
-  return (
-    <div class="select-none cursor-pointer flex flex-col border(gray-300 2) rounded-md">
-      <img
-        class="aspect-square overflow-hidden"
-        src={"/logo.svg"}
-      />
-      <p class="ml-4 py-2 text-gray-800">Some image title</p>
-    </div>
-  );
-};
+export default async function Home() {
+  const assets: Asset[] = [];
 
-const AssetsGrid = () => {
-  const cards = [];
-
-  for (let i = 1; i <= 10; i++) {
-    cards.push(<AssetCard key={i} />);
+  for await (const entry of await Database.list({ prefix: ["assets"] })) {
+    assets.push(entry.value as Asset);
   }
 
-  return <div class="p-3 grid grid-cols-8 gap-2">{cards}</div>;
-};
-
-export default function Home() {
   return (
     <>
       <Head>
@@ -60,7 +46,7 @@ export default function Home() {
       </Head>
       <main class="h-screen">
         <Header />
-        <AssetsGrid />
+        <AssetsGrid assets={assets} />
       </main>
     </>
   );
