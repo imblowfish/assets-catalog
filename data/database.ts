@@ -21,8 +21,6 @@ export interface Asset {
   id: string;
   title: string;
   description: string;
-  path: string;
-  type: string;
 }
 
 const kv = await Deno.openKv(Deno.env.get("DATABASE_PATH"));
