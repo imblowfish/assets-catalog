@@ -1,7 +1,7 @@
 import { JSX } from "preact";
 import IconUpload from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/upload.tsx";
 
-async function uploadFile() {
+async function uploadAsset() {
   // @ts-expect-error Deno shows error here because FileSystem API still doesn't supported
   //                  by several browsers, but it works in the Chrome browser
   //                  More info https://developer.mozilla.org/en-US/docs/Web/API/File_System_API
@@ -21,6 +21,8 @@ async function uploadFile() {
   if (resp.status !== 200) {
     throw new Error(`API returned ${resp.status} status`);
   }
+
+  window.location.reload();
 }
 
 export const UploadButton = (props: JSX.HTMLAttributes<HTMLButtonElement>) => {
@@ -28,7 +30,7 @@ export const UploadButton = (props: JSX.HTMLAttributes<HTMLButtonElement>) => {
     <button
       {...props}
       onClick={() => {
-        uploadFile().catch((err) => {
+        uploadAsset().catch((err) => {
           console.error(`Failed to upload asset: ${(err as Error).message}`);
         });
       }}

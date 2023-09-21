@@ -9,7 +9,8 @@ import * as $3 from "./routes/api/v0/assets/[id].ts";
 import * as $4 from "./routes/api/v0/assets/preview/[id].ts";
 import * as $5 from "./routes/assets/[id].tsx";
 import * as $6 from "./routes/index.tsx";
-import * as $$0 from "./islands/UploadButton.tsx";
+import * as $$0 from "./islands/RemoveButton.tsx";
+import * as $$1 from "./islands/UploadButton.tsx";
 
 const manifest = {
   routes: {
@@ -22,7 +23,8 @@ const manifest = {
     "./routes/index.tsx": $6,
   },
   islands: {
-    "./islands/UploadButton.tsx": $$0,
+    "./islands/RemoveButton.tsx": $$0,
+    "./islands/UploadButton.tsx": $$1,
   },
   baseUrl: import.meta.url,
 };
