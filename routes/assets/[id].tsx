@@ -1,6 +1,7 @@
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import IconX from "icons/x.tsx";
 import { Asset, Database } from "$/data/database.ts";
+import { DeleteButton } from "$/islands/RemoveButton.tsx";
 
 export default defineRoute(async (_req: Request, ctx) => {
   const id = ctx.params.id;
@@ -29,6 +30,7 @@ export default defineRoute(async (_req: Request, ctx) => {
         </a>
         <p class="text-3xl">{asset.title}</p>
         <p class="text-lg">{asset.description}</p>
+        <DeleteButton assetId={id} />
       </div>
     </div>
   );
