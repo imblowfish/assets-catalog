@@ -1,18 +1,20 @@
 import { Asset } from "$/data/database.ts";
 
-interface AssetCardProps {
+interface AssetProps {
   id: string;
   title: string;
 }
 
-const AssetCard = (props: AssetCardProps) => {
+const AssetCard = (props: AssetProps) => {
   return (
     <div class="select-none cursor-pointer flex flex-col border(gray-300 2) rounded-md">
-      <img
-        class="aspect-square overflow-hidden"
-        src={`api/v0/assets/preview/${props.id}`}
-      />
-      <p class="ml-4 py-2 text-gray-800">{props.title}</p>
+      <a href={`/assets/${props.id}`}>
+        <img
+          class="aspect-square overflow-hidden"
+          src={`api/v0/assets/preview/${props.id}`}
+        />
+        <p class="ml-4 py-2 text-gray-800">{props.title}</p>
+      </a>
     </div>
   );
 };
