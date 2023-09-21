@@ -1,5 +1,5 @@
 import { Head } from "$fresh/runtime.ts";
-import IconSearch from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/search.tsx";
+import IconSearch from "icons/search.tsx";
 import { UploadButton } from "$/islands/UploadButton.tsx";
 import { AssetsGrid } from "$/components/AssetsGrid.tsx";
 import { Asset, Database } from "$/data/database.ts";
