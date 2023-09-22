@@ -3,8 +3,8 @@
   "tasks": {
     "start": "deno run --unstable -A --watch=static/,routes/ dev.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts",
+    "build": "deno run --unstable -A dev.ts build",
+    "preview": "deno run --unstable -A main.ts",
     "test": "DATABASE_PATH=./tmp/test/kv/asset-catalog STORAGE_PATH=./tmp/test/storage deno test --unstable -A"
   },
   "fmt": {
@@ -28,7 +28,7 @@
     }
   },
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.4.2/",
+    "$fresh/": "https://deno.land/x/fresh@1.4.3/",
     "preact": "https://esm.sh/preact@10.15.1",
     "preact/": "https://esm.sh/preact@10.15.1/",
     "preact/compat": "https://esm.sh/preact@10.16.0/compat",
