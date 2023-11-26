@@ -7,18 +7,10 @@
     "preview": "deno run --unstable -A main.ts",
     "test": "DATABASE_PATH=./tmp/test/kv/asset-catalog STORAGE_PATH=./tmp/test/storage deno test --unstable -A"
   },
-  "fmt": {
-    "exclude": [
-      "_fresh"
-    ]
-  },
   "lint": {
     "include": [
       "./**/*.ts",
       "./**/*.tsx"
-    ],
-    "exclude": [
-      "_fresh"
     ],
     "rules": {
       "tags": [
@@ -28,13 +20,13 @@
     }
   },
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.4.3/",
-    "preact": "https://esm.sh/preact@10.15.1",
-    "preact/": "https://esm.sh/preact@10.15.1/",
+    "$fresh/": "https://deno.land/x/fresh@1.5.4/",
+    "preact": "https://esm.sh/preact@10.18.1",
+    "preact/": "https://esm.sh/preact@10.18.1/",
     "preact/compat": "https://esm.sh/preact@10.16.0/compat",
-    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.1",
-    "@preact/signals": "https://esm.sh/*@preact/signals@1.1.3",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.2.3",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "$std/": "https://deno.land/std@0.193.0/",
     "$/": "./",
     "cliffy/": "https://deno.land/x/cliffy@v1.0.0-rc.3/",
@@ -44,5 +36,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
-  }
+  },
+  "exclude": [
+    "**/_fresh/*"
+  ]
 }
