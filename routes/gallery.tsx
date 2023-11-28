@@ -25,7 +25,7 @@ export default defineRoute((_req, _ctx) => {
 
   return (
     <>
-      <Header />
+      <Header search />
       <main class="h-full">
         <GalleryGrid sx="gap-1 m-4">{images}</GalleryGrid>
       </main>
