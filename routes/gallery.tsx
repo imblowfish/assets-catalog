@@ -1,3 +1,4 @@
+import { Head } from "$fresh/runtime.ts";
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { Header } from "$/components/Header.tsx";
 import { GalleryGrid, GalleryGridItem } from "$/components/GalleryGrid.tsx";
@@ -25,8 +26,11 @@ export default defineRoute((_req, _ctx) => {
 
   return (
     <>
-      <Header search />
-      <main class="h-full">
+      <Head>
+        <title>Gallery</title>
+      </Head>
+      <main>
+        <Header search />
         <GalleryGrid sx="gap-1 m-4">{images}</GalleryGrid>
       </main>
     </>
