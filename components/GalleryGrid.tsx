@@ -65,10 +65,8 @@ export interface GalleryGridProps {
 
 export const GalleryGrid = (props: GalleryGridProps) => {
   return (
-    <div class="flex justify-center">
-      <div class={`grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 ${props.sx}`}>
-        {props.children}
-      </div>
+    <div class="flex flex-row flex-wrap justify-center gap-1 m-4">
+      {props.children}
     </div>
   );
 };
