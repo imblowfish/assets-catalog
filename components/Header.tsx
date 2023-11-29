@@ -8,17 +8,17 @@ export interface HeaderProps {
 
 export const Header = (props: HeaderProps) => {
   return (
-    <header class="bg-[#444444] h-16 sticky top-0 z-50">
+    <header class="border bg-white h-16 sticky top-0 z-50 w-full">
       <div class="h-full flex justify-between items-center">
         <Logo sx="ml-4" />
         {props.search && (
-          <div class="w-1/2 border border-gray-100 rounded-full flex flex-row items-center transition focus-within:border-sky-500">
-            <IconSearch class="w-5 h-5 ml-2 mr-2 text-gray-100" />
+          <div class="border focus-within:border-black flex flex-row items-center">
             <input
-              class="w-full h-9 bg-transparent focus:outline-none text-gray-100"
+              class="w-full ml-2 h-8 bg-transparent focus:outline-none"
               placeholder="Search"
               type="search"
             />
+            <IconSearch class="w-5 h-5 ml-2 mr-2" />
           </div>
         )}
         <Avatar sx="mr-4" />

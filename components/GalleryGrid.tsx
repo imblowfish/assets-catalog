@@ -30,8 +30,8 @@ const GridOverlay = (props: GalleryGridOverlayProps) => {
       <div class="bottom-1 w-full absolute flex flex-row">
         <Avatar sx="ml-1" />
         <div class="ml-1">
-          <p class="text-[14px] text-white font-semibold">{props.title}</p>
-          <p class="text-[11px] text-white">{props.author}</p>
+          <p class="text-[16px] text-white font-semibold">{props.title}</p>
+          <p class="text-[12px] text-white">{props.author}</p>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@ export interface GalleryGridItemProps {
 
 export const GalleryGridItem = (props: GalleryGridItemProps) => {
   return (
-    <div class="group border cursor-pointer select-none overflow-hidden w-32 h-32 md:w-36 md:h-36 lg:w-60 lg:h-60 relative">
+    <div class="group rounded-md cursor-pointer select-none overflow-hidden w-60 h-60 relative">
       <Thumbnail
         sx="transition duration-500 easy-in-out group-hover:scale-110"
         url={props.thumbnailUrl}
