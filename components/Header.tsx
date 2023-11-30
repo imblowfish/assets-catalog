@@ -16,7 +16,6 @@ export const Header = (props: HeaderProps) => {
             <input
               class="w-full ml-2 h-8 bg-transparent focus:outline-none"
               placeholder="Search"
-              type="search"
             />
             <IconSearch class="w-5 h-5 ml-2 mr-2" />
           </div>

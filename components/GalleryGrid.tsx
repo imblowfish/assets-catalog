@@ -44,17 +44,19 @@ export interface GalleryGridItemProps {
 
 export const GalleryGridItem = (props: GalleryGridItemProps) => {
   return (
-    <div class="group rounded-md cursor-pointer select-none overflow-hidden w-60 h-60 relative">
-      <Thumbnail
-        sx="transition duration-500 easy-in-out group-hover:scale-110"
-        url={props.thumbnailUrl}
-      />
-      <GridOverlay
-        sx="opacity-0 transition duration-300 group-hover:opacity-100"
-        title="Some title"
-        author="Some Author"
-      />
-    </div>
+    <a href="/assets/123">
+      <div class="group rounded-md cursor-pointer select-none overflow-hidden w-60 h-60 relative">
+        <Thumbnail
+          sx="transition duration-500 easy-in-out group-hover:scale-110"
+          url={props.thumbnailUrl}
+        />
+        <GridOverlay
+          sx="opacity-0 transition duration-300 group-hover:opacity-100"
+          title="Some title"
+          author="Some Author"
+        />
+      </div>
+    </a>
   );
 };
 
