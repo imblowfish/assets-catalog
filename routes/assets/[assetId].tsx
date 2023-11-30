@@ -28,7 +28,7 @@ interface AssetsListViewer {
 
 const AssetsList = (props: AssetsListViewer) => {
   return (
-    <div class={`bg-black flex flex-col gap-2 ${props.sx}`}>
+    <div class={`bg-black flex flex-col items-center gap-2 ${props.sx}`}>
       <Asset
         url="/test_asset_0.jpg"
         maxHeight={props.maxHeightPerAsset}
