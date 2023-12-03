@@ -26,7 +26,7 @@ export default function Register() {
           style={{ height: "calc(100vh - 64px)" }}
         >
           <div class="flex flex-col gap-4">
-            <div class="flex justify-start">
+            <div class="flex justify-center">
               <p class="text-4xl">Create an account</p>
             </div>
             <div class="flex justify-center items-center flex-col gap-2">
