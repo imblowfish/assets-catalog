@@ -1,5 +1,6 @@
 import { Avatar } from "$/components/Avatar.tsx";
-import IconSearch from "icons/search.tsx";
+import { Input } from "$/components/Input.tsx";
+import { SearchIcon } from "$/components/Icons.tsx";
 
 export interface LogoProps {
   sx?: string;
@@ -18,6 +19,7 @@ export const Logo = (props: LogoProps) => {
 
 export interface HeaderProps {
   search?: boolean;
+  avatar?: boolean;
 }
 
 export const Header = (props: HeaderProps) => {
@@ -26,15 +28,12 @@ export const Header = (props: HeaderProps) => {
       <div class="h-full flex justify-between items-center">
         <Logo sx="ml-4" />
         {props.search && (
-          <div class="border focus-within:border-black flex flex-row items-center">
-            <input
-              class="w-full ml-2 h-8 bg-transparent focus:outline-none"
-              placeholder="Search"
-            />
-            <IconSearch class="w-5 h-5 ml-2 mr-2" />
-          </div>
+          <Input
+            placeholder="Search"
+            endIcon={<SearchIcon />}
+          />
         )}
-        <Avatar sx="mr-4" />
+        {props.avatar && <Avatar sx="mr-4" />}
       </div>
     </header>
   );

@@ -29,7 +29,10 @@ export default function Home() {
         <title>Gallery</title>
       </Head>
       <main>
-        <Header search />
+        <Header
+          search
+          avatar
+        />
         <GalleryGrid sx="gap-1 m-4">{images}</GalleryGrid>
       </main>
     </>

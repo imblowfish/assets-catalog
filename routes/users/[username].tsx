@@ -12,8 +12,9 @@ export default defineRoute((_req, ctx) => {
         <title>User Page</title>
       </Head>
       <main>
-        <Header />
+        <Header avatar />
         <div class="flex flex-col items-center m-4">
+          {/* TODO: It doesn't work anymore with tailwind, I should remove all `sx` options */}
           <Avatar sx="w-40 h-40" />
           <p class="text-2xl mt-4">Full Name</p>
           <p class="text-lg">{username}</p>

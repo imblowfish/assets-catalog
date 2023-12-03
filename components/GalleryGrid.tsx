@@ -66,6 +66,7 @@ export interface GalleryGridProps {
 }
 
 export const GalleryGrid = (props: GalleryGridProps) => {
+  // TODO: Replace `justify-center` with `justify-start`
   return (
     <div class="flex flex-row flex-wrap justify-center gap-1 m-4">
       {props.children}
