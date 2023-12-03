@@ -2,31 +2,32 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/_404.tsx";
-import * as $1 from "./routes/_app.tsx";
-import * as $2 from "./routes/api/v0/assets.ts";
-import * as $3 from "./routes/api/v0/assets/[id].ts";
-import * as $4 from "./routes/api/v0/assets/preview/[id].ts";
-import * as $5 from "./routes/assets/[id].tsx";
-import * as $6 from "./routes/index.tsx";
-import * as $$0 from "./islands/RemoveButton.tsx";
-import * as $$1 from "./islands/UploadButton.tsx";
+import * as $_404 from "./routes/_404.tsx";
+import * as $_app from "./routes/_app.tsx";
+import * as $api_v0_assets from "./routes/api/v0/assets.ts";
+import * as $api_v0_assets_id_ from "./routes/api/v0/assets/[id].ts";
+import * as $api_v0_assets_preview_id_ from "./routes/api/v0/assets/preview/[id].ts";
+import * as $assets_id_ from "./routes/assets/[id].tsx";
+import * as $index from "./routes/index.tsx";
+import * as $RemoveButton from "./islands/RemoveButton.tsx";
+import * as $UploadButton from "./islands/UploadButton.tsx";
+import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
-    "./routes/_404.tsx": $0,
-    "./routes/_app.tsx": $1,
-    "./routes/api/v0/assets.ts": $2,
-    "./routes/api/v0/assets/[id].ts": $3,
-    "./routes/api/v0/assets/preview/[id].ts": $4,
-    "./routes/assets/[id].tsx": $5,
-    "./routes/index.tsx": $6,
+    "./routes/_404.tsx": $_404,
+    "./routes/_app.tsx": $_app,
+    "./routes/api/v0/assets.ts": $api_v0_assets,
+    "./routes/api/v0/assets/[id].ts": $api_v0_assets_id_,
+    "./routes/api/v0/assets/preview/[id].ts": $api_v0_assets_preview_id_,
+    "./routes/assets/[id].tsx": $assets_id_,
+    "./routes/index.tsx": $index,
   },
   islands: {
-    "./islands/RemoveButton.tsx": $$0,
-    "./islands/UploadButton.tsx": $$1,
+    "./islands/RemoveButton.tsx": $RemoveButton,
+    "./islands/UploadButton.tsx": $UploadButton,
   },
   baseUrl: import.meta.url,
-};
+} satisfies Manifest;
 
 export default manifest;
