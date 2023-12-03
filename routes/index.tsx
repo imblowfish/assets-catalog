@@ -1,52 +1,39 @@
 import { Head } from "$fresh/runtime.ts";
-import IconSearch from "icons/search.tsx";
-import { UploadButton } from "$/islands/UploadButton.tsx";
-import { AssetsGrid } from "$/components/AssetsGrid.tsx";
-import { Asset, Database } from "$/data/database.ts";
+import { Header } from "$/components/Header.tsx";
+import { GalleryGrid, GalleryGridItem } from "$/components/GalleryGrid.tsx";
 
-const SearchButton = () => {
-  return (
-    <div class="border(gray-500 2) h-8 w-min flex flex-row rounded space-x-2">
-      <IconSearch class="h-full" />
-      <input
-        class="h-full outline-0"
-        placeholder="Search..."
-      />
-    </div>
-  );
-};
+export default function Home() {
+  const count = 1000;
+  const testImages = [
+    "/logo.svg",
+    "/test_pattern_high.jpg",
+    "/test_pattern_low.png",
+  ];
 
-const Header = () => {
-  return (
-    <div class="flex flex-col border">
-      <div class="flex flex-row justify-start content-center items-center space-x-4">
-        <img
-          class="w-15 ml-8 mr-0 m-4"
-          src="/logo.svg"
-        />
-        <p class="font-bold">Assets Catalog</p>
-        <SearchButton />
-        <UploadButton class="col-span-2" />
-      </div>
-    </div>
-  );
-};
+  const images = [];
 
-export default async function Home() {
-  const assets: Asset[] = [];
+  for (let i = 0; i < count; i++) {
+    const randomImage = Math.floor(Math.random() * testImages.length);
 
-  for await (const entry of await Database.list({ prefix: ["assets"] })) {
-    assets.push(entry.value as Asset);
+    images.push(
+      <GalleryGridItem
+        key={i}
+        thumbnailUrl={testImages[randomImage]}
+      />,
+    );
   }
 
   return (
     <>
       <Head>
-        <title>Assets Catalog</title>
+        <title>Gallery</title>
       </Head>
-      <main class="h-screen">
-        <Header />
-        <AssetsGrid assets={assets} />
+      <main>
+        <Header
+          search
+          avatar
+        />
+        <GalleryGrid sx="gap-1 m-4">{images}</GalleryGrid>
       </main>
     </>
   );
