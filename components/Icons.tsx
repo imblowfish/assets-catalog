@@ -3,6 +3,8 @@ import IconBrandGithub from "icons/brand-github.tsx";
 import IconBrandGitlab from "icons/brand-gitlab.tsx";
 import IconBrandGoogle from "icons/brand-google.tsx";
 import IconEye from "icons/eye.tsx";
+import IconPin from "icons/pin.tsx";
+import IconPinFilled from "icons/pin-filled.tsx";
 import IconSearch from "icons/search.tsx";
 
 const defaultStyle = "h-5";
@@ -21,6 +23,14 @@ export const GitlabIcon = () => {
 
 export const GoogleIcon = () => {
   return <IconBrandGoogle class={defaultStyle} />;
+};
+
+export const PinIcon = () => {
+  return <IconPin class={defaultStyle} />;
+};
+
+export const PinIconFilled = () => {
+  return <IconPinFilled class={defaultStyle} />;
 };
 
 export const EyeIcon = () => {
