@@ -12,6 +12,7 @@ import * as $auth_login from "./routes/auth/login.tsx";
 import * as $auth_register from "./routes/auth/register.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $users_username_ from "./routes/users/[username].tsx";
+import * as $ActionsButton from "./islands/ActionsButton.tsx";
 import * as $RemoveButton from "./islands/RemoveButton.tsx";
 import * as $UploadButton from "./islands/UploadButton.tsx";
 import { type Manifest } from "$fresh/server.ts";
@@ -30,6 +31,7 @@ const manifest = {
     "./routes/users/[username].tsx": $users_username_,
   },
   islands: {
+    "./islands/ActionsButton.tsx": $ActionsButton,
     "./islands/RemoveButton.tsx": $RemoveButton,
     "./islands/UploadButton.tsx": $UploadButton,
   },

@@ -42,8 +42,9 @@ export default function Home() {
         <title>Gallery</title>
       </Head>
       <main>
-        <Header
+      <Header
           search
+          actions
           avatar
         />
         <p class="text-2xl ml-4 mt-4">Pinned</p>

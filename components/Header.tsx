@@ -1,6 +1,7 @@
 import { Avatar } from "$/components/Avatar.tsx";
 import { Input } from "$/components/Input.tsx";
 import { SearchIcon } from "$/components/Icons.tsx";
+import { ActionsButton } from "$/islands/ActionsButton.tsx";
 
 export interface LogoProps {
   sx?: string;
@@ -19,21 +20,25 @@ export const Logo = (props: LogoProps) => {
 
 export interface HeaderProps {
   search?: boolean;
+  actions?: boolean;
   avatar?: boolean;
 }
 
 export const Header = (props: HeaderProps) => {
   return (
     <header class="border bg-white h-16 sticky top-0 z-50 w-full">
-      <div class="h-full flex justify-between items-center">
-        <Logo sx="ml-4" />
-        {props.search && (
-          <Input
-            placeholder="Search"
-            endIcon={<SearchIcon />}
-          />
-        )}
-        {props.avatar && <Avatar sx="mr-4" />}
+      <div class="h-full flex justify-between items-center ml-4 mr-4">
+        <Logo />
+        <div class="flex flex-row items-center gap-4">
+          {props.search && (
+            <Input
+              placeholder="Search"
+              endIcon={<SearchIcon />}
+            />
+          )}
+          {props.actions && <ActionsButton />}
+          {props.avatar && <Avatar />}
+        </div>
       </div>
     </header>
   );
