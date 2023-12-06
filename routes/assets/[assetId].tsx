@@ -67,10 +67,7 @@ export default defineRoute((_req, ctx) => {
         <title>Asset page</title>
       </Head>
       <main>
-        <Header
-          search
-          avatar
-        />
+        <Header avatar />
         <div class="grid grid-cols-4">
           <AssetsList
             sx="col-span-3"
