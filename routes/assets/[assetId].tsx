@@ -1,25 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { Header } from "$/components/Header.tsx";
-
-interface AssetProps {
-  url: string;
-  maxHeight: string;
-}
-
-const Asset = (props: AssetProps) => {
-  return (
-    <div
-      class="flex"
-      style={{ maxHeight: props.maxHeight }}
-    >
-      <img
-        class="object-contain"
-        src={props.url}
-      />
-    </div>
-  );
-};
+import { Asset } from "$/components/Asset.tsx";
 
 interface AssetsListViewer {
   maxHeightPerAsset: string;
