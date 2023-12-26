@@ -1,5 +1,5 @@
 import { VNode } from "preact";
-import { ForwardedRef, HTMLAttributes, forwardRef } from "preact/compat";
+import { ForwardedRef, forwardRef, HTMLAttributes } from "preact/compat";
 
 export type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
   startIcon?: VNode;

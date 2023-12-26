@@ -42,7 +42,7 @@ export default function Home() {
         <title>Gallery</title>
       </Head>
       <main>
-      <Header
+        <Header
           search
           actions
           avatar

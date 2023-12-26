@@ -9,9 +9,9 @@ interface ButtonGroupProps {
 export const ButtonGroup = (props: ButtonGroupProps) => {
   return (
     <div
-      class={`flex justify-center ${props.vertical ? "flex-col" : "flex-row"} ${
-        props.sx
-      }`}
+      class={`flex justify-center ${
+        props.vertical ? "flex-col" : "flex-row"
+      } ${props.sx}`}
     >
       {props.children}
     </div>
