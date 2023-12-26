@@ -11,10 +11,11 @@ import * as $assets_assetId_ from "./routes/assets/[assetId].tsx";
 import * as $auth_login from "./routes/auth/login.tsx";
 import * as $auth_register from "./routes/auth/register.tsx";
 import * as $index from "./routes/index.tsx";
+import * as $new_asset from "./routes/new/asset.tsx";
 import * as $users_username_ from "./routes/users/[username].tsx";
+import * as $Actions from "./islands/Actions.tsx";
 import * as $ActionsButton from "./islands/ActionsButton.tsx";
-import * as $RemoveButton from "./islands/RemoveButton.tsx";
-import * as $UploadButton from "./islands/UploadButton.tsx";
+import * as $FileUploader from "./islands/FileUploader.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -28,12 +29,13 @@ const manifest = {
     "./routes/auth/login.tsx": $auth_login,
     "./routes/auth/register.tsx": $auth_register,
     "./routes/index.tsx": $index,
+    "./routes/new/asset.tsx": $new_asset,
     "./routes/users/[username].tsx": $users_username_,
   },
   islands: {
+    "./islands/Actions.tsx": $Actions,
     "./islands/ActionsButton.tsx": $ActionsButton,
-    "./islands/RemoveButton.tsx": $RemoveButton,
-    "./islands/UploadButton.tsx": $UploadButton,
+    "./islands/FileUploader.tsx": $FileUploader,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
