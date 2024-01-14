@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "preact/compat";
-import { Asset } from "$/components/Asset.tsx";
 import { UploadIcon } from "$/components/Icons.tsx";
+import { Asset } from "$/islands/Asset.tsx";
 
 export interface FileUploaderProps {
   onChange?: (file: File) => void;

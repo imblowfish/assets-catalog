@@ -9,7 +9,10 @@ export const Asset = forwardRef(
   (props: AssetProps, ref: ForwardedRef<HTMLImageElement>) => {
     return (
       <div
-        class="flex justify-center"
+        class="flex justify-center cursor-pointer"
+        onClick={() => {
+          window.open(props.url);
+        }}
         style={{ maxHeight: props.maxHeight ?? "100%" }}
       >
         <img
