@@ -1,7 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { Header } from "$/components/Header.tsx";
-import { Asset } from "$/components/Asset.tsx";
+import { Asset } from "$/islands/Asset.tsx";
 import { DownloadButton } from "$/islands/DownloadButton.tsx";
 
 interface AssetsListViewer {
