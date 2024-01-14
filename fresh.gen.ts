@@ -15,6 +15,7 @@ import * as $new_asset from "./routes/new/asset.tsx";
 import * as $users_username_ from "./routes/users/[username].tsx";
 import * as $Actions from "./islands/Actions.tsx";
 import * as $ActionsButton from "./islands/ActionsButton.tsx";
+import * as $DownloadButton from "./islands/DownloadButton.tsx";
 import * as $FileUploader from "./islands/FileUploader.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -35,6 +36,7 @@ const manifest = {
   islands: {
     "./islands/Actions.tsx": $Actions,
     "./islands/ActionsButton.tsx": $ActionsButton,
+    "./islands/DownloadButton.tsx": $DownloadButton,
     "./islands/FileUploader.tsx": $FileUploader,
   },
   baseUrl: import.meta.url,
