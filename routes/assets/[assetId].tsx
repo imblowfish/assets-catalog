@@ -2,6 +2,7 @@ import { Head } from "$fresh/runtime.ts";
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { Header } from "$/components/Header.tsx";
 import { Asset } from "$/components/Asset.tsx";
+import { DownloadButton } from "$/islands/DownloadButton.tsx";
 
 interface AssetsListViewer {
   maxHeightPerAsset: string;
@@ -35,6 +36,10 @@ const Sidebar = (props: SidebarProps) => {
       style={{ height: props.height }}
     >
       Sidebar
+      <DownloadButton
+        filename="test_asset_1.jpg"
+        url="/test_asset_1.jpg"
+      />
       <p>title, info, comments etc.</p>
     </div>
   );
