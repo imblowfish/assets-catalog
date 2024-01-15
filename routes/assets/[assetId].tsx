@@ -2,7 +2,7 @@ import { Head } from "$fresh/runtime.ts";
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { Header } from "$/components/Header.tsx";
 import { Asset } from "$/islands/Asset.tsx";
-import { DownloadButton } from "$/islands/DownloadButton.tsx";
+import { Sidebar } from "$/islands/Sidebar.tsx";
 
 interface AssetsListViewer {
   maxHeightPerAsset: string;
@@ -20,27 +20,6 @@ const AssetsList = (props: AssetsListViewer) => {
         url="/test_asset_1.jpg"
         maxHeight={props.maxHeightPerAsset}
       />
-    </div>
-  );
-};
-
-interface SidebarProps {
-  height: string;
-  sx?: string;
-}
-
-const Sidebar = (props: SidebarProps) => {
-  return (
-    <div
-      class={`sticky overflow-auto ${props.sx}`}
-      style={{ height: props.height }}
-    >
-      Sidebar
-      <DownloadButton
-        filename="test_asset_1.jpg"
-        url="/test_asset_1.jpg"
-      />
-      <p>title, info, comments etc.</p>
     </div>
   );
 };
