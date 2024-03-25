@@ -1,11 +1,11 @@
 {
   "lock": false,
   "tasks": {
-    "start": "deno run --unstable -A --watch=static/,routes/ dev.ts",
+    "start": "deno run --unstable-kv -A --watch=static/,routes/ dev.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "build": "deno run --unstable -A dev.ts build",
-    "preview": "deno run --unstable -A main.ts",
-    "test": "DATABASE_PATH=./tmp/test/kv/asset-catalog STORAGE_PATH=./tmp/test/storage deno test --unstable -A"
+    "build": "deno run --unstable-kv -A dev.ts build",
+    "preview": "deno run --unstable-kv -A main.ts",
+    "test": "DATABASE_PATH=./tmp/test/kv/asset-catalog STORAGE_PATH=./tmp/test/storage deno test --unstable-kv -A"
   },
   "lint": {
     "include": [
