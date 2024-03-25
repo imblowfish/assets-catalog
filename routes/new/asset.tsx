@@ -1,6 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
 import { Header } from "$/components/Header.tsx";
-import { Actions } from "$/islands/Actions.tsx";
+import { CreateNewAsset } from "$/islands/Actions.tsx";
 
 export default function NewAsset() {
   return (
@@ -13,7 +13,7 @@ export default function NewAsset() {
           actions
           avatar
         />
-        <Actions.CreateNewAsset />
+        <CreateNewAsset />
       </main>
     </>
   );

@@ -6,6 +6,6 @@ Deno.test(
   "Database files were created on initialization on specific path",
   async () => {
     await Deno.stat(storagePath);
-    Deno.remove("tmp/test", { recursive: true });
+    await Deno.remove("tmp/test", { recursive: true });
   },
 );
