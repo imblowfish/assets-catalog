@@ -23,7 +23,7 @@ export function CreateNewAsset() {
       return;
     }
 
-    window.location.href = "/";
+    globalThis.location.href = "/";
   }, []);
 
   return (

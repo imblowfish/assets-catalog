@@ -25,8 +25,6 @@ const AssetsList = (props: AssetsListViewer) => {
 };
 
 export default defineRoute((_req, ctx) => {
-  const _assetId = ctx.params.assetId;
-
   return (
     <>
       <Head>
@@ -42,6 +40,7 @@ export default defineRoute((_req, ctx) => {
           <Sidebar
             sx="top-16"
             height="calc(100vh - 64px)"
+            assetId={ctx.params.assetId}
           />
         </div>
       </main>
