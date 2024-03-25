@@ -3,10 +3,10 @@ import { Button } from "$/components/Button.tsx";
 import { Input } from "$/components/Input.tsx";
 import { FileUploader } from "$/islands/FileUploader.tsx";
 
-function CreateNewAsset() {
+export function CreateNewAsset() {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const nameRef = useRef<HTMLInputElement | null>(null);
-  const descriptionRef = useRef<HTMLInputElement | null>(null);
+  const assetTitleRef = useRef<HTMLInputElement | null>(null);
+  const assetDescriptionRef = useRef<HTMLInputElement | null>(null);
 
   const uploadAsset = useCallback(async () => {
     if (!formRef.current) {
@@ -41,13 +41,13 @@ function CreateNewAsset() {
           }}
         >
           <Input
-            ref={nameRef}
+            ref={assetTitleRef}
             required
             name="title"
             placeholder="Asset title"
           />
           <Input
-            ref={descriptionRef}
+            ref={assetDescriptionRef}
             name="description"
             placeholder="Description(optional)"
           />
@@ -63,7 +63,3 @@ function CreateNewAsset() {
     </div>
   );
 }
-
-export const Actions = {
-  CreateNewAsset: CreateNewAsset,
-};
