@@ -11,6 +11,7 @@ import IconPin from "icons/pin.tsx";
 import IconPinFilled from "icons/pin-filled.tsx";
 import IconPlus from "icons/plus.tsx";
 import IconSearch from "icons/search.tsx";
+import IconTrash from "icons/trash.tsx";
 import IconUpload from "icons/upload.tsx";
 import IconX from "icons/x.tsx";
 
@@ -66,6 +67,10 @@ export const PlusIcon = () => {
 
 export const SearchIcon = () => {
   return <IconSearch class={defaultStyle} />;
+};
+
+export const TrashIcon = () => {
+  return <IconTrash class={defaultStyle} />;
 };
 
 export const UploadIcon = () => {
