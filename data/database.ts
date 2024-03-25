@@ -1,3 +1,4 @@
+/// <reference lib="deno.unstable" />
 import * as path from "$std/path/mod.ts";
 import { load } from "$std/dotenv/mod.ts";
 
