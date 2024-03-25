@@ -11,7 +11,7 @@ export const Asset = forwardRef(
       <div
         class="flex justify-center cursor-pointer"
         onClick={() => {
-          window.open(props.url);
+          globalThis.open(props.url);
         }}
         style={{ maxHeight: props.maxHeight ?? "100%" }}
       >
