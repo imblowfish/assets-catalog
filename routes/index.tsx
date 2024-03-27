@@ -7,10 +7,10 @@ import {
   // GalleryGridItemV2,
 } from "$/components/GalleryGrid.tsx";
 import { Button } from "$/components/Button.tsx";
-import { Asset } from "$/data/database.ts";
+import { AssetData } from "$/data/database.ts";
 
 export default async function Home() {
-  let assets: Asset[] = [];
+  let assets: AssetData[] = [];
 
   const resp = await fetch("http://localhost:8000/api/v0/assets");
   if (resp.status === 200) {

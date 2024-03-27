@@ -7,9 +7,14 @@ export const handler: Handlers = {
     const asset = await Database.get(["assets", assetId]);
 
     if (!asset.value) {
-      return new Response(`Can't find asset with id '${assetId}'`, {
-        status: 404,
-      });
+      return new Response(
+        JSON.stringify({
+          message: `Can't find asset with id '${assetId}'`,
+        }),
+        {
+          status: 404,
+        },
+      );
     }
 
     return new Response(JSON.stringify(asset.value), {
@@ -27,9 +32,14 @@ export const handler: Handlers = {
     const asset = await Database.get(assetKey);
 
     if (!asset.value) {
-      return new Response(`Can't find asset with id '${assetId}'`, {
-        status: 404,
-      });
+      return new Response(
+        JSON.stringify({
+          message: `Can't find asset with id '${assetId}'`,
+        }),
+        {
+          status: 404,
+        },
+      );
     }
 
     const modifiedAsset = {
@@ -43,9 +53,12 @@ export const handler: Handlers = {
       .commit();
 
     if (!ok) {
-      return new Response("Error with atomic operation", {
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({ message: "Error with atomic operation" }),
+        {
+          status: 500,
+        },
+      );
     }
 
     return new Response(JSON.stringify(modifiedAsset), {
@@ -59,21 +72,30 @@ export const handler: Handlers = {
     const asset = await Database.get(assetKey);
 
     if (!asset.value) {
-      return new Response(`Can't find asset with id '${assetId}'`, {
-        status: 404,
-      });
+      return new Response(
+        JSON.stringify({ message: `Can't find asset with id '${assetId}'` }),
+        {
+          status: 404,
+        },
+      );
     }
 
     const ok = await Database.atomic().check(asset).delete(assetKey).commit();
 
     if (!ok) {
-      return new Response("Error with atomic operation", {
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({ message: "Error with atomic operation" }),
+        {
+          status: 500,
+        },
+      );
     }
 
-    return new Response(`Asset '${assetId}' deleted`, {
-      status: 200,
-    });
+    return new Response(
+      JSON.stringify({ message: `Asset '${assetId}' deleted` }),
+      {
+        status: 200,
+      },
+    );
   },
 };

@@ -8,7 +8,10 @@ export const handler: Handlers = {
 
     if (!file) {
       console.error("'file' field is empty");
-      return new Response("'file' field is empty", { status: 400 });
+      return new Response(
+        JSON.stringify({ message: "'file' field is empty" }),
+        { status: 400 },
+      );
     }
 
     try {
@@ -21,7 +24,10 @@ export const handler: Handlers = {
         },
       );
     } catch (err) {
-      return new Response(`${(err as Error).message}`, { status: 500 });
+      return new Response(
+        JSON.stringify({ message: `${(err as Error).message}` }),
+        { status: 500 },
+      );
     }
   },
 };
