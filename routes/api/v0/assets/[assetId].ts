@@ -1,14 +1,13 @@
 import { Handlers } from "$fresh/server.ts";
 import { Database } from "$/data/database.ts";
-import { deleteFromStorage } from "$/data/storage.ts";
 
 export const handler: Handlers = {
   async GET(_req, ctx) {
-    const id = ctx.params.id;
-    const asset = await Database.get(["assets", id]);
+    const assetId = ctx.params.assetId;
+    const asset = await Database.get(["assets", assetId]);
 
     if (!asset.value) {
-      return new Response(`Can't find asset with id '${id}'`, {
+      return new Response(`Can't find asset with id '${assetId}'`, {
         status: 404,
       });
     }
@@ -18,9 +17,9 @@ export const handler: Handlers = {
     });
   },
 
-  async PUT(req, ctx) {
-    const id = ctx.params.id;
-    const assetKey = ["assets", id];
+  async PATCH(req, ctx) {
+    const assetId = ctx.params.assetId;
+    const assetKey = ["assets", assetId];
     const assetChanges = (await req.json()) as {
       title: string;
       description: string;
@@ -28,7 +27,7 @@ export const handler: Handlers = {
     const asset = await Database.get(assetKey);
 
     if (!asset.value) {
-      return new Response(`Can't find asset with id '${id}'`, {
+      return new Response(`Can't find asset with id '${assetId}'`, {
         status: 404,
       });
     }
@@ -55,12 +54,12 @@ export const handler: Handlers = {
   },
 
   async DELETE(_req, ctx) {
-    const id = ctx.params.id;
-    const assetKey = ["assets", id];
+    const assetId = ctx.params.assetId;
+    const assetKey = ["assets", assetId];
     const asset = await Database.get(assetKey);
 
     if (!asset.value) {
-      return new Response(`Can't find asset with id '${id}'`, {
+      return new Response(`Can't find asset with id '${assetId}'`, {
         status: 404,
       });
     }
@@ -73,13 +72,7 @@ export const handler: Handlers = {
       });
     }
 
-    try {
-      await deleteFromStorage(id);
-    } catch (_err) {
-      return new Response(`Can't delete file from storage`, { status: 500 });
-    }
-
-    return new Response(`Asset '${id}' deleted`, {
+    return new Response(`Asset '${assetId}' deleted`, {
       status: 200,
     });
   },

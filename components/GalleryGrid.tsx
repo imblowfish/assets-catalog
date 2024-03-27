@@ -63,12 +63,15 @@ const GridOverlayV2 = (props: GalleryGridOverlayProps) => {
 };
 
 export interface GalleryGridItemProps {
+  id: string;
+  title: string;
+  author: string;
   thumbnailUrl: string;
 }
 
 export const GalleryGridItem = (props: GalleryGridItemProps) => {
   return (
-    <a href="/assets/123">
+    <a href={`/assets/${props.id}`}>
       <div class="group rounded-md cursor-pointer select-none overflow-hidden w-60 h-60 relative">
         <Thumbnail
           sx="transition duration-500 easy-in-out group-hover:scale-110"
@@ -76,8 +79,8 @@ export const GalleryGridItem = (props: GalleryGridItemProps) => {
         />
         <GridOverlay
           sx="opacity-0 transition duration-300 group-hover:opacity-100"
-          title="Some title"
-          author="Some Author"
+          title={props.title}
+          author={props.author}
         />
       </div>
     </a>
@@ -87,15 +90,15 @@ export const GalleryGridItem = (props: GalleryGridItemProps) => {
 export const GalleryGridItemV2 = (props: GalleryGridItemProps) => {
   return (
     <div class="group rounded-md border border-black cursor-pointer select-none overflow-hidden w-60 h-60 relative">
-      <a href="/assets/123">
+      <a href={`/assets/${props.id}`}>
         <Thumbnail
           sx="transition duration-500 easy-in-out group-hover:scale-110"
           url={props.thumbnailUrl}
         />
       </a>
       <GridOverlayV2
-        title="Some title"
-        author="Some Author"
+        title={props.title}
+        author={props.author}
       />
     </div>
   );

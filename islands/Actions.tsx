@@ -13,9 +13,27 @@ export function CreateNewAsset() {
       return;
     }
 
-    const resp = await fetch(`/api/v0/assets`, {
+    const fileFormData = new FormData(formRef.current);
+    fileFormData.delete("title");
+    fileFormData.delete("description");
+
+    let resp = await fetch("/api/v0/storage", {
       method: "POST",
-      body: new FormData(formRef.current),
+      body: fileFormData,
+    });
+
+    if (resp.status !== 200) {
+      console.error(`API returned ${resp.status}: ${await resp.text()}`);
+      return;
+    }
+
+    const assetFormData = new FormData(formRef.current);
+    assetFormData.delete("file");
+    assetFormData.set("url", ((await resp.json()) as { url: string }).url);
+
+    resp = await fetch(`/api/v0/assets`, {
+      method: "POST",
+      body: assetFormData,
     });
 
     if (resp.status != 200) {
