@@ -3,35 +3,32 @@ import { Header } from "$/components/Header.tsx";
 import {
   GalleryGrid,
   GalleryGridItem,
-  GalleryGridItemV2,
+  // GalleryGridItem,
+  // GalleryGridItemV2,
 } from "$/components/GalleryGrid.tsx";
 import { Button } from "$/components/Button.tsx";
+import { Asset } from "$/data/database.ts";
 
-export default function Home() {
-  const count = 10;
-  const testImages = [
-    "/logo.svg",
-    "/test_pattern_high.jpg",
-    "/test_pattern_low.png",
-  ];
+export default async function Home() {
+  let assets: Asset[] = [];
+
+  const resp = await fetch("http://localhost:8000/api/v0/assets");
+  if (resp.status === 200) {
+    assets = await resp.json();
+  } else {
+    console.error(`API returned ${resp.status}: ${await resp.text()}`);
+  }
 
   const images = [];
-  const imagesV2 = [];
 
-  for (let i = 0; i < count; i++) {
-    const randomImage = Math.floor(Math.random() * testImages.length);
-
+  for (const asset of assets) {
     images.push(
       <GalleryGridItem
-        key={i}
-        thumbnailUrl={testImages[randomImage]}
-      />,
-    );
-
-    imagesV2.push(
-      <GalleryGridItemV2
-        key={i}
-        thumbnailUrl={testImages[randomImage]}
+        key={asset.id}
+        id={asset.id}
+        title={asset.title}
+        author="Some author"
+        thumbnailUrl={`${asset.url}`}
       />,
     );
   }
@@ -47,10 +44,12 @@ export default function Home() {
           actions
           avatar
         />
-        <p class="text-2xl ml-4 mt-4">Pinned</p>
+        {
+          /* <p class="text-2xl ml-4 mt-4">Pinned</p>
         <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>
-        <p class="text-2xl ml-4 mt-12">Recently viewed</p>
-        <GalleryGrid sx="gap-1 ml-4">{imagesV2}</GalleryGrid>
+        <p class="text-2xl ml-4 mt-12">Recently viewed</p> */
+        }
+        <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>
         <div class="flex flex-col items-center m-4">
           <Button>Show all</Button>
         </div>

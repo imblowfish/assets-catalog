@@ -5,8 +5,9 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_v0_assets from "./routes/api/v0/assets.ts";
-import * as $api_v0_assets_id_ from "./routes/api/v0/assets/[id].ts";
-import * as $api_v0_assets_preview_id_ from "./routes/api/v0/assets/preview/[id].ts";
+import * as $api_v0_assets_assetId_ from "./routes/api/v0/assets/[assetId].ts";
+import * as $api_v0_storage from "./routes/api/v0/storage.ts";
+import * as $api_v0_storage_filename_ from "./routes/api/v0/storage/[filename].ts";
 import * as $assets_assetId_ from "./routes/assets/[assetId].tsx";
 import * as $auth_login from "./routes/auth/login.tsx";
 import * as $auth_register from "./routes/auth/register.tsx";
@@ -25,8 +26,9 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/v0/assets.ts": $api_v0_assets,
-    "./routes/api/v0/assets/[id].ts": $api_v0_assets_id_,
-    "./routes/api/v0/assets/preview/[id].ts": $api_v0_assets_preview_id_,
+    "./routes/api/v0/assets/[assetId].ts": $api_v0_assets_assetId_,
+    "./routes/api/v0/storage.ts": $api_v0_storage,
+    "./routes/api/v0/storage/[filename].ts": $api_v0_storage_filename_,
     "./routes/assets/[assetId].tsx": $assets_assetId_,
     "./routes/auth/login.tsx": $auth_login,
     "./routes/auth/register.tsx": $auth_register,

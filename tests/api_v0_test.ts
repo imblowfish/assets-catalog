@@ -4,6 +4,7 @@ import {
   assertEquals,
   assertExists,
   assertInstanceOf,
+  assertMatch,
   assertRejects,
 } from "$std/testing/asserts.ts";
 import * as path from "$std/path/mod.ts";
@@ -23,11 +24,7 @@ const connectionInfo: ServeHandlerInfo = {
 Deno.test("/assets", async (t) => {
   const testAssetTitle = "Test asset title";
   const testAssetDescription = "Test asset description";
-
-  const testAssetFile = new File(
-    [await Deno.readFile(`${dirname}/null.png`)],
-    `${dirname}/null.png`,
-  );
+  const testAssetUrl = "http://some-url/file.png";
 
   const handler = await createHandler(manifest);
 
@@ -47,7 +44,7 @@ Deno.test("/assets", async (t) => {
     const bodyContent = new FormData();
     bodyContent.append("title", testAssetTitle);
     bodyContent.append("description", testAssetDescription);
-    bodyContent.append("file", testAssetFile);
+    bodyContent.append("url", testAssetUrl);
 
     const resp = await handler(
       new Request(
@@ -66,11 +63,7 @@ Deno.test("/assets", async (t) => {
     assertExists(jsonResp.id);
     assertEquals(jsonResp.title, testAssetTitle);
     assertEquals(jsonResp.description, testAssetDescription);
-
-    const stat = await Deno.stat(
-      `${Deno.env.get("STORAGE_PATH")!}/${jsonResp.id}`,
-    );
-    assertEquals(stat.isFile, true);
+    assertEquals(jsonResp.url, testAssetUrl);
 
     asset = { ...jsonResp };
   });
@@ -106,7 +99,7 @@ Deno.test("/assets", async (t) => {
       new Request(
         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           body: JSON.stringify({
             title: "New test asset title",
             description: "New test asset description",
@@ -122,27 +115,27 @@ Deno.test("/assets", async (t) => {
     assertEquals(asset.description, "New test asset description");
   });
 
-  await t.step("Get asset preview by id", async () => {
-    const resp = await handler(
-      new Request(
-        `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/${asset?.id}`,
-      ),
-      connectionInfo,
-    );
+  // await t.step("Get asset preview by id", async () => {
+  //   const resp = await handler(
+  //     new Request(
+  //       `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/${asset?.id}`,
+  //     ),
+  //     connectionInfo,
+  //   );
 
-    assertEquals(resp.status, 200);
-  });
+  //   assertEquals(resp.status, 200);
+  // });
 
-  await t.step("Get preview for a non-existent asset", async () => {
-    const resp = await handler(
-      new Request(
-        `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/nonExistentId`,
-      ),
-      connectionInfo,
-    );
+  // await t.step("Get preview for a non-existent asset", async () => {
+  //   const resp = await handler(
+  //     new Request(
+  //       `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/nonExistentId`,
+  //     ),
+  //     connectionInfo,
+  //   );
 
-    assertEquals(resp.status, 404);
-  });
+  //   assertEquals(resp.status, 404);
+  // });
 
   await t.step("Delete asset by id", async () => {
     const resp = await handler(
@@ -181,7 +174,7 @@ Deno.test("/assets", async (t) => {
       new Request(
         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           body: JSON.stringify({
             title: "New test asset title",
             description: "New test asset description",
@@ -209,4 +202,59 @@ Deno.test("/assets", async (t) => {
   });
 
   Deno.remove(databasePath, { recursive: true });
+});
+
+Deno.test("/storage", async (t) => {
+  const testFile = new File(
+    [await Deno.readFile(`${dirname}/null.png`)],
+    `null.png`,
+  );
+
+  const handler = await createHandler(manifest);
+
+  let savedFileUrl = "";
+
+  await t.step("Upload file to storage", async () => {
+    const formData = new FormData();
+    formData.append("file", testFile);
+
+    const resp = await handler(
+      new Request(
+        `http://${connectionInfo.remoteAddr.hostname}/api/v0/storage`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      ),
+      connectionInfo,
+    );
+
+    const jsonResp = (await resp.json()) as { url: string };
+    assertEquals(resp.status, 200);
+    assertMatch(
+      jsonResp.url,
+      new RegExp(
+        `http://${connectionInfo.remoteAddr.hostname}/api/v0/storage/.*_${testFile.name}`,
+      ),
+    );
+
+    savedFileUrl = jsonResp.url;
+    const savedFileName = jsonResp.url.split("/").at(-1);
+
+    const stat = await Deno.stat(
+      `${Deno.env.get("STORAGE_PATH")!}/${savedFileName}`,
+    );
+    assertEquals(stat.isFile, true);
+  });
+
+  await t.step("Download file from storage", async () => {
+    const resp = await handler(
+      new Request(savedFileUrl, {
+        method: "GET",
+      }),
+      connectionInfo,
+    );
+
+    assertEquals(resp.status, 200);
+  });
 });

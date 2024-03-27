@@ -1,3 +1,4 @@
+import { ulid } from "ulid/mod.ts";
 import { load } from "$std/dotenv/mod.ts";
 
 const config = await load({
@@ -7,7 +8,8 @@ const config = await load({
   export: true,
 });
 
-const storagePath = Deno.env.get("STORAGE_PATH")! || config["STORAGE_PATH"];
+export const storagePath = Deno.env.get("STORAGE_PATH")! ||
+  config["STORAGE_PATH"];
 
 console.log("Storage initialization");
 console.log(`STORAGE_PATH=${storagePath}`);
@@ -16,17 +18,19 @@ await Deno.mkdir(storagePath, {
   recursive: true,
 });
 
-export async function saveToStorage(file: File, id: string) {
-  return Deno.writeFile(
-    `${storagePath}/${id}`,
+export async function saveToStorage(file: File) {
+  const filename = `${ulid()}_${file.name}`;
+  await Deno.writeFile(
+    `${storagePath}/${filename}`,
     new Uint8Array(await file.arrayBuffer()),
   );
+  return filename;
+}
+
+export function getFromStorage(filename: string) {
+  return Deno.readFile(`${storagePath}/${filename}`);
 }
 
 export function deleteFromStorage(id: string) {
   return Deno.remove(`${storagePath}/${id}`);
-}
-
-export function getAssetData(id: string) {
-  return Deno.readFile(`${storagePath}/${id}`);
 }
