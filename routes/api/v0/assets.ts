@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { ulid } from "ulid/mod.ts";
-import { Asset, Database } from "$/data/database.ts";
+import { AssetData, Database } from "$/data/database.ts";
 
 export const handler: Handlers = {
   async GET(_req, _ctx) {
@@ -28,7 +28,7 @@ export const handler: Handlers = {
         title,
         description,
         url,
-      } satisfies Asset;
+      } satisfies AssetData;
 
       const ok = await Database.atomic().set(["assets", id], asset).commit();
 

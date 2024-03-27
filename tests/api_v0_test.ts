@@ -8,7 +8,7 @@ import {
   assertRejects,
 } from "$std/testing/asserts.ts";
 import * as path from "$std/path/mod.ts";
-import { Asset } from "$/data/database.ts";
+import { AssetData } from "$/data/database.ts";
 
 const dirname = path.dirname(path.fromFileUrl(import.meta.url));
 const databasePath = Deno.env.get("DATABASE_PATH")!;
@@ -38,7 +38,7 @@ Deno.test("/assets", async (t) => {
     assertEquals(await resp.json(), []);
   });
 
-  let asset: Asset | null = null;
+  let asset: AssetData | null = null;
 
   await t.step("Add a new asset", async () => {
     const bodyContent = new FormData();
@@ -57,7 +57,7 @@ Deno.test("/assets", async (t) => {
       connectionInfo,
     );
 
-    const jsonResp = (await resp.json()) as Asset;
+    const jsonResp = (await resp.json()) as AssetData;
 
     assertEquals(resp.status, 200);
     assertExists(jsonResp.id);
@@ -110,7 +110,7 @@ Deno.test("/assets", async (t) => {
     );
 
     assertEquals(resp.status, 200);
-    asset = (await resp.json()) as Asset;
+    asset = (await resp.json()) as AssetData;
     assertEquals(asset.title, "New test asset title");
     assertEquals(asset.description, "New test asset description");
   });
@@ -147,7 +147,9 @@ Deno.test("/assets", async (t) => {
     );
 
     assertEquals(resp.status, 200);
-    assertEquals(await resp.text(), `Asset '${asset?.id}' deleted`);
+    assertEquals(await resp.json(), {
+      message: `Asset '${asset?.id}' deleted`,
+    });
     await assertRejects(
       () => {
         return Deno.stat(`${Deno.env.get("STORAGE_PATH")!}/${asset?.id}`);
@@ -166,7 +168,9 @@ Deno.test("/assets", async (t) => {
     );
 
     assertEquals(resp.status, 404);
-    assertEquals(await resp.text(), `Can't find asset with id '${asset?.id}'`);
+    assertEquals(await resp.json(), {
+      message: `Can't find asset with id '${asset?.id}'`,
+    });
   });
 
   await t.step("Update a non-existent asset", async () => {
@@ -185,7 +189,9 @@ Deno.test("/assets", async (t) => {
     );
 
     assertEquals(resp.status, 404);
-    assertEquals(await resp.text(), `Can't find asset with id '${asset?.id}'`);
+    assertEquals(await resp.json(), {
+      message: `Can't find asset with id '${asset?.id}'`,
+    });
   });
 
   await t.step("Delete a non-existent asset", async () => {
@@ -198,7 +204,9 @@ Deno.test("/assets", async (t) => {
     );
 
     assertEquals(resp.status, 404);
-    assertEquals(await resp.text(), `Can't find asset with id '${asset?.id}'`);
+    assertEquals(await resp.json(), {
+      message: `Can't find asset with id '${asset?.id}'`,
+    });
   });
 
   Deno.remove(databasePath, { recursive: true });
