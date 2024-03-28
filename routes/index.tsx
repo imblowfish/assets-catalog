@@ -40,7 +40,7 @@ export default async function Home() {
       </Head>
       <main>
         <Header
-          search
+          // search
           actions
           avatar
         />
