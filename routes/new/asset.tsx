@@ -11,7 +11,7 @@ export default function NewAsset() {
       <main>
         <Header
           actions
-          avatar
+          // avatar
         />
         <CreateNewAsset />
       </main>

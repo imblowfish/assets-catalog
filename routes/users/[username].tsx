@@ -12,7 +12,7 @@ export default defineRoute((_req, ctx) => {
         <title>User Page</title>
       </Head>
       <main>
-        <Header avatar />
+        <Header /* avatar */ />
         <div class="flex flex-col items-center m-4">
           <AvatarFull />
           <p class="text-2xl mt-4">Full Name</p>

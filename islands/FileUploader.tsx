@@ -1,6 +1,27 @@
-import { useEffect, useRef, useState } from "preact/compat";
+import {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from "preact/compat";
 import { UploadIcon } from "$/components/Icons.tsx";
-import { Asset } from "$/islands/Asset.tsx";
+
+const ImagePreview = forwardRef(
+  (_props: undefined, ref: ForwardedRef<HTMLImageElement>) => {
+    return (
+      <div
+        class="flex justify-center"
+        style={{ maxHeight: "80%" }}
+      >
+        <img
+          class="object-contain"
+          ref={ref}
+        />
+      </div>
+    );
+  },
+);
 
 export interface FileUploaderProps {
   onChange?: (file: File) => void;
@@ -51,10 +72,7 @@ export const FileUploader = (props: FileUploaderProps) => {
           <p>Choose file or drag it here</p>
         </div>
       )}
-      <Asset
-        ref={assetRef}
-        maxHeight="80%"
-      />
+      <ImagePreview ref={assetRef} />
     </div>
   );
 };
