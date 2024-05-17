@@ -22,7 +22,7 @@ export default defineRoute(async (_req, ctx) => {
         <title>Assets catalog - {asset.title}</title>
       </Head>
       <main>
-        <Header avatar />
+        <Header /* avatar */ />
         <AssetView {...asset} />
       </main>
     </>

@@ -27,7 +27,7 @@ export default async function Home() {
         key={asset.id}
         id={asset.id}
         title={asset.title}
-        author="Some author"
+        // author="Some author"
         thumbnailUrl={`${asset.url}`}
       />,
     );
@@ -42,7 +42,7 @@ export default async function Home() {
         <Header
           // search
           actions
-          avatar
+          // avatar
         />
         {
           /* <p class="text-2xl ml-4 mt-4">Pinned</p>
