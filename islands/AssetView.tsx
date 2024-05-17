@@ -1,52 +1,37 @@
 import { useCallback } from "preact/compat";
-import { AssetData } from "$/data/database.ts";
 import { Button } from "$/components/Button.tsx";
-// import { Input } from "$/components/Input.tsx";
 import { ButtonGroup } from "$/components/ButtonGroup.tsx";
-// import { EditIcon } from "$/components/Icons.tsx";
-// import { CheckIcon } from "$/components/Icons.tsx";
 import { XIcon } from "$/components/Icons.tsx";
 import { DownloadIcon } from "$/components/Icons.tsx";
 import { TrashIcon } from "$/components/Icons.tsx";
+import type { AssetData } from "$/data/database.ts";
 
-type ContentProps = Pick<AssetData, "title" | "description">;
+interface AssetProps {
+  url: string;
+}
 
-const Content = (props: ContentProps) => {
+const Asset = (props: AssetProps) => {
   return (
-    <>
-      <p>{props.title}</p>
-      <p>{props.description}</p>
-    </>
+    <div
+      class="flex justify-center cursor-pointer"
+      onClick={() => {
+        globalThis.open(props.url);
+      }}
+      style={{ maxHeight: "calc(100vh - 64px)" }}
+    >
+      <img
+        class="object-contain"
+        src={props.url}
+      />
+    </div>
   );
 };
 
-// const ContentEditable = (props: ContentProps) => {
-//   return (
-//     <>
-//       <Input
-//         value={props.title}
-//         placeholder="Title"
-//       />
-//       <Input
-//         value={props.description}
-//         placeholder="Description"
-//       />
-//     </>
-//   );
-// };
-
-interface SidebarProps {
-  height: string;
-  sx?: string;
-  assetData: AssetData;
-}
+type SidebarProps = AssetData;
 
 export const Sidebar = (props: SidebarProps) => {
-  const msg = 10;
-  // const [editMode, setEditMode] = useState(false);
-
   const deleteAsset = useCallback(async () => {
-    const resp = await fetch(`/api/v0/assets/${props.assetData.id}`, {
+    const resp = await fetch(`/api/v0/assets/${props.id}`, {
       method: "DELETE",
     });
 
@@ -60,8 +45,8 @@ export const Sidebar = (props: SidebarProps) => {
 
   return (
     <div
-      class={`sticky flex flex-col overflow-auto p-2 gap-2 ${props.sx}`}
-      style={{ height: props.height }}
+      class={`sticky flex flex-col overflow-auto p-2 gap-2 top-16`}
+      style={{ height: "calc(100vh - 64px)" }}
     >
       <ButtonGroup sx="justify-end">
         <Button
@@ -72,22 +57,11 @@ export const Sidebar = (props: SidebarProps) => {
           <XIcon />
         </Button>
       </ButtonGroup>
-      {
-        /* {editMode
-        ? <ContentEditable {...props.assetData} />
-        : <Content {...props.assetData} /> */
-      }
-      <Content {...props.assetData} />
+      <>
+        <p>{props.title}</p>
+        <p>{props.description}</p>
+      </>
       <ButtonGroup sx="justify-end gap-1">
-        {
-          /* <Button
-          onClick={() => {
-            setEditMode((value) => !value);
-          }}
-        >
-          {editMode ? <CheckIcon /> : <EditIcon />}
-        </Button> */
-        }
         <Button
           onClick={() => {
             if (
@@ -108,8 +82,8 @@ export const Sidebar = (props: SidebarProps) => {
           onClick={() => {
             const anchor = document.createElement("a");
             document.body.appendChild(anchor);
-            anchor.download = props.assetData.url.split("/").at(-1)!;
-            anchor.href = props.assetData.url;
+            anchor.download = props.url.split("/").at(-1)!;
+            anchor.href = props.url;
             anchor.click();
             document.body.removeChild(anchor);
           }}
@@ -117,6 +91,20 @@ export const Sidebar = (props: SidebarProps) => {
           <DownloadIcon />
         </Button>
       </ButtonGroup>
+    </div>
+  );
+};
+
+type AssetViewProps = AssetData;
+
+export const AssetView = (props: AssetViewProps) => {
+  return (
+    <div class="grid grid-cols-4">
+      <div class={`bg-black flex flex-col items-center gap-2 col-span-3`}>
+        <Asset url={props.url} />
+        {/* <Asset url="/test_asset_1.jpg" /> */}
+      </div>
+      <Sidebar {...props} />
     </div>
   );
 };

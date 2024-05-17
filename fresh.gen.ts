@@ -16,9 +16,8 @@ import * as $new_asset from "./routes/new/asset.tsx";
 import * as $users_username_ from "./routes/users/[username].tsx";
 import * as $Actions from "./islands/Actions.tsx";
 import * as $ActionsButton from "./islands/ActionsButton.tsx";
-import * as $Asset from "./islands/Asset.tsx";
+import * as $AssetView from "./islands/AssetView.tsx";
 import * as $FileUploader from "./islands/FileUploader.tsx";
-import * as $Sidebar from "./islands/Sidebar.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -39,9 +38,8 @@ const manifest = {
   islands: {
     "./islands/Actions.tsx": $Actions,
     "./islands/ActionsButton.tsx": $ActionsButton,
-    "./islands/Asset.tsx": $Asset,
+    "./islands/AssetView.tsx": $AssetView,
     "./islands/FileUploader.tsx": $FileUploader,
-    "./islands/Sidebar.tsx": $Sidebar,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
