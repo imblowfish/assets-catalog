@@ -1,9 +1,7 @@
 import { useCallback } from "preact/compat";
 import { Button } from "$/components/Button.tsx";
 import { ButtonGroup } from "$/components/ButtonGroup.tsx";
-import { XIcon } from "$/components/Icons.tsx";
-import { DownloadIcon } from "$/components/Icons.tsx";
-import { TrashIcon } from "$/components/Icons.tsx";
+import { DownloadIcon, TrashIcon, XIcon } from "$/components/Icons.tsx";
 import type { AssetData } from "$/data/database.ts";
 
 interface AssetProps {
