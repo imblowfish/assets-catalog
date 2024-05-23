@@ -17,5 +17,5 @@ export interface DatabaseBackend {
   getUserByUsername: (username: string) => Promise<User | null>;
 
   insertSession: (session: Session) => Promise<void>;
+  deleteSession: (sessionId: string) => Promise<void>;
 }
-

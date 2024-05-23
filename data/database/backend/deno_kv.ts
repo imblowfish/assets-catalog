@@ -58,4 +58,8 @@ export const databaseBackend = {
       })
       .set(primaryKey, session);
   },
+  deleteSession: async (sessionId) => {
+    const primaryKey = ["sessions", sessionId];
+    await kv.delete(primaryKey);
+  },
 } satisfies DatabaseBackend;
