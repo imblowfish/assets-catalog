@@ -100,7 +100,7 @@ async function insertAsset(asset: Asset) {
 }
 
 export const databaseBackend = {
-  version: "v0.0.1",
+  version: "v0.0.0",
   user: {
     insert: insertUser,
     get: {
