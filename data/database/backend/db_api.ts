@@ -15,11 +15,14 @@ export interface Asset {
   id: string;
   userId: string;
   collectionId: string;
+  title: string;
+  description: string;
+  url: string;
 }
 
 export interface DatabaseBackend {
   version: string;
-  user: {
+  users: {
     insert: (user: User) => Promise<void>;
     get: {
       byUserId: (userId: string) => Promise<User | null>;
@@ -27,14 +30,17 @@ export interface DatabaseBackend {
       byUsername: (username: string) => Promise<User | null>;
     };
   };
-  session: {
+  sessions: {
     insert: (session: Session) => Promise<void>;
     delete: (sessionId: string) => Promise<void>;
     get: {
       bySessionId: (sessionId: string) => Promise<Session | null>;
     };
   };
-  asset: {
+  assets: {
     insert: (asset: Asset) => Promise<void>;
+    get: {
+      byUserId: (userId: string) => Promise<Asset[]>;
+    }
   };
 }

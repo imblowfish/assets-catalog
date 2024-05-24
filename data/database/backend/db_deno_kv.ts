@@ -99,9 +99,21 @@ async function insertAsset(asset: Asset) {
     .commit();
 }
 
+async function getAssetsByUserId(userId: string) {
+  const byUserIdKey = ["assets_by_user_id", userId];
+  const assets = (
+    await Array.fromAsync(
+      kv.list<Asset>({
+        prefix: byUserIdKey,
+      })
+    )
+  ).map((record) => record.value);
+  return assets;
+}
+
 export const databaseBackend = {
   version: "v0.0.0",
-  user: {
+  users: {
     insert: insertUser,
     get: {
       byUserId: getUserByUserId,
@@ -109,14 +121,17 @@ export const databaseBackend = {
       byUsername: getUserByUsername,
     },
   },
-  session: {
+  sessions: {
     insert: insertSession,
     delete: deleteSession,
     get: {
       bySessionId: getSessionBySessionId,
     },
   },
-  asset: {
+  assets: {
     insert: insertAsset,
+    get: {
+      byUserId: getAssetsByUserId,
+    }
   },
 } satisfies DatabaseBackend;

@@ -34,7 +34,7 @@ export const handler: Handlers = {
       );
     }
 
-    const user = await Database.getUserByEmail(email);
+    const user = await Database.user.get.byEmail(email);
     if (!user) {
       return new Response(
         JSON.stringify({
@@ -62,7 +62,7 @@ export const handler: Handlers = {
 
     console.log(sessionId);
 
-    await Database.insertSession({
+    await Database.session.insert({
       id: sessionId,
       userId: user.id,
     });

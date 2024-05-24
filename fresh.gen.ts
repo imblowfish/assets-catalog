@@ -5,6 +5,10 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_v0_1_auth_login from "./routes/api/v0.1/auth/login.ts";
+import * as $api_v0_1_auth_logout from "./routes/api/v0.1/auth/logout.ts";
+import * as $api_v0_1_auth_registration from "./routes/api/v0.1/auth/registration.ts";
+import * as $api_v0_1_user_userId_assets from "./routes/api/v0.1/user/[userId]/assets.ts";
 import * as $api_v0_assets from "./routes/api/v0/assets.ts";
 import * as $api_v0_assets_assetId_ from "./routes/api/v0/assets/[assetId].ts";
 import * as $api_v0_auth_login from "./routes/api/v0/auth/login.ts";
@@ -29,6 +33,10 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
+    "./routes/api/v0.1/auth/login.ts": $api_v0_1_auth_login,
+    "./routes/api/v0.1/auth/logout.ts": $api_v0_1_auth_logout,
+    "./routes/api/v0.1/auth/registration.ts": $api_v0_1_auth_registration,
+    "./routes/api/v0.1/user/[userId]/assets.ts": $api_v0_1_user_userId_assets,
     "./routes/api/v0/assets.ts": $api_v0_assets,
     "./routes/api/v0/assets/[assetId].ts": $api_v0_assets_assetId_,
     "./routes/api/v0/auth/login.ts": $api_v0_auth_login,

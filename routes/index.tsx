@@ -6,32 +6,32 @@ import {
   // GalleryGridItem,
   // GalleryGridItemV2,
 } from "$/components/GalleryGrid.tsx";
-import { Button } from "$/components/Button.tsx";
-import { AssetData } from "$/data/database.ts";
+// import { Button } from "$/components/Button.tsx";
+import { FreshContext } from "$fresh/server.ts";
+import { Asset, Session } from "$/data/database/database.ts";
+import { HttpCode } from "$/data/http_codes.ts";
 
-export default async function Home() {
-  let assets: AssetData[] = [];
-
-  const resp = await fetch("http://localhost:8000/api/v0/assets");
-  if (resp.status === 200) {
-    assets = await resp.json();
-  } else {
-    console.error(`API returned ${resp.status}: ${await resp.text()}`);
-  }
-
-  const images = [];
-
-  for (const asset of assets) {
-    images.push(
-      <GalleryGridItem
-        key={asset.id}
-        id={asset.id}
-        title={asset.title}
-        // author="Some author"
-        thumbnailUrl={`${asset.url}`}
-      />,
+export default async function Home(_req: Request, ctx: FreshContext<Session>) {
+  const session = ctx.state;
+  if (!session) {
+    return Response.redirect(
+      "http://localhost:8000/auth/login",
+      HttpCode.SeeOther
     );
   }
+
+  const resp = await fetch(
+    `http://localhost:8000/api/v0.1/user/${session.userId}/assets`
+  );
+  if (resp.status !== HttpCode.Ok) {
+    throw new Error(
+      `API returned error [${resp.status}]: ${await resp.text()}`
+    );
+  }
+
+  const assets = (await resp.json()) as Asset[];
+
+  console.log(assets);
 
   return (
     <>
@@ -44,14 +44,23 @@ export default async function Home() {
           actions
           // avatar
         />
-        {
-          /* <p class="text-2xl ml-4 mt-4">Pinned</p>
+        {/* <p class="text-2xl ml-4 mt-4">Pinned</p>
         <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>
-        <p class="text-2xl ml-4 mt-12">Recently viewed</p> */
-        }
-        <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>
+        <p class="text-2xl ml-4 mt-12">Recently viewed</p> */}
+        <GalleryGrid sx="gap-1 ml-4">
+          {assets.map((asset) => (
+            <GalleryGridItem
+              key={asset.id}
+              id={asset.id}
+              title={asset.title}
+              // author="Some author"
+              thumbnailUrl={`${asset.url}`}
+            />
+          ))}
+        </GalleryGrid>
         <div class="flex flex-col items-center m-4">
-          <Button>Show all</Button>
+          {assets.length === 0 && <p>No assets yet</p>}
+          {/* <Button>Show all</Button> */}
         </div>
       </main>
     </>
