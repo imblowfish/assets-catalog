@@ -24,18 +24,17 @@ export const Registration = () => {
     ) {
       throw new Error("Can't get all necessary data to submit");
     }
-    const email = refInputEmail.current?.value;
-    const password = refInputPassword.current?.value;
-    const username = refInputUsername.current?.value;
 
-    const authorization = `Basic ${btoa(`${email}:${password}:${username}`)}`;
+    const email = refInputEmail.current.value;
+    const password = refInputPassword.current.value;
+    const username = refInputUsername.current.value;
 
     const resp = await fetch(
       "http://localhost:8000/api/v0.1/auth/registration",
       {
         method: "POST",
         headers: {
-          Authorization: authorization,
+          Authorization: `Basic ${btoa(`${email}:${password}:${username}`)}`,
         },
       }
     );
@@ -73,7 +72,7 @@ export const Registration = () => {
                   globalThis.location.href = "http://localhost:8000/auth/login";
                 })
                 .catch((err) => {
-                  console.error(err);
+                  throw err;
                 });
             }}
           >

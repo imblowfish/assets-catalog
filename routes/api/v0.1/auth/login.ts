@@ -34,7 +34,7 @@ export const handler: Handlers = {
       );
     }
 
-    const user = await Database.user.get.byEmail(email);
+    const user = await Database.users.get.byEmail(email);
     if (!user) {
       return new Response(
         JSON.stringify({
@@ -60,11 +60,9 @@ export const handler: Handlers = {
     // TODO: Add check if generated id is already exists
     const sessionId = crypto.randomUUID();
 
-    console.log(sessionId);
-
-    await Database.session.insert({
+    await Database.sessions.insert({
       id: sessionId,
-      userId: user.id,
+      username: user.username,
     });
 
     const url = new URL(req.url);
@@ -79,10 +77,9 @@ export const handler: Handlers = {
       secure: true, // TODO: Enable only in case of production
       httpOnly: true,
     });
-    headers.set("location", "/");
 
     return new Response(null, {
-      status: HttpCode.SeeOther,
+      status: HttpCode.Ok,
       headers,
     });
   },

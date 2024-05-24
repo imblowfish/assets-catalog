@@ -41,7 +41,7 @@ export default async function Home(_req: Request, ctx: FreshContext<Session>) {
       <main>
         <Header
           // search
-          actions
+          // actions
           // avatar
         />
         {/* <p class="text-2xl ml-4 mt-4">Pinned</p>

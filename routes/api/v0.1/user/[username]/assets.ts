@@ -17,7 +17,7 @@ export const handler: Handlers = {
       );
     }
 
-    const user = await Database.users.get.byUserId(username);
+    const user = await Database.users.get.byUsername(username);
     if (!user) {
       return new Response(
         JSON.stringify({
