@@ -11,7 +11,10 @@ import { FreshContext } from "$fresh/server.ts";
 import { Asset, Session } from "$/data/database/database.ts";
 import { HttpCode } from "$/data/http_codes.ts";
 
-export default async function Home(_req: Request, ctx: FreshContext<Session>) {
+export default async function HomePage(
+  _req: Request,
+  ctx: FreshContext<Session>
+) {
   const session = ctx.state;
   if (!session?.id) {
     return Response.redirect(
@@ -31,8 +34,6 @@ export default async function Home(_req: Request, ctx: FreshContext<Session>) {
 
   const assets = (await resp.json()) as Asset[];
 
-  console.log(assets);
-
   return (
     <>
       <Head>
@@ -40,9 +41,9 @@ export default async function Home(_req: Request, ctx: FreshContext<Session>) {
       </Head>
       <main>
         <Header
-          // search
-          // actions
-          // avatar
+        // search
+        // actions
+        // avatar
         />
         {/* <p class="text-2xl ml-4 mt-4">Pinned</p>
         <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>

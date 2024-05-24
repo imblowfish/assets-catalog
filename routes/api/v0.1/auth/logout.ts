@@ -10,7 +10,7 @@ export const handler: Handlers = {
 
     const sessionId = headers.get("sessionId") as string | null;
     if (sessionId) {
-      await Database.session.delete(sessionId);
+      await Database.sessions.delete(sessionId);
     }
 
     deleteCookie(headers, "sessionId", {
