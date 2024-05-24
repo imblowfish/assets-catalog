@@ -42,7 +42,8 @@ async function insertUser(user: User) {
     })
     .set(primaryKey, user)
     .set(byEmailKey, user)
-    .set(byUsernameKey, user);
+    .set(byUsernameKey, user)
+    .commit();
 }
 
 async function getUserByUserId(userId: string) {
@@ -68,7 +69,8 @@ async function insertSession(session: Session) {
       key: primaryKey,
       versionstamp: null,
     })
-    .set(primaryKey, session);
+    .set(primaryKey, session)
+    .commit();
 }
 
 async function getSessionBySessionId(sessionId: string) {

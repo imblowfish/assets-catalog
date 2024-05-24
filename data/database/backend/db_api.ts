@@ -7,7 +7,7 @@ export interface User {
 
 export interface Session {
   id: string;
-  userId: string;
+  username: string;
   // TODO: Add session expiration
 }
 

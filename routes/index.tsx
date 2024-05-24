@@ -13,7 +13,7 @@ import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function Home(_req: Request, ctx: FreshContext<Session>) {
   const session = ctx.state;
-  if (!session) {
+  if (!session?.id) {
     return Response.redirect(
       "http://localhost:8000/auth/login",
       HttpCode.SeeOther
@@ -21,7 +21,7 @@ export default async function Home(_req: Request, ctx: FreshContext<Session>) {
   }
 
   const resp = await fetch(
-    `http://localhost:8000/api/v0.1/user/${session.userId}/assets`
+    `http://localhost:8000/api/v0.1/user/${session.username}/assets`
   );
   if (resp.status !== HttpCode.Ok) {
     throw new Error(

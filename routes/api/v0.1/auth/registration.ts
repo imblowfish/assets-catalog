@@ -33,7 +33,7 @@ export const handler: Handlers = {
       );
     }
 
-    if (await Database.user.get.byEmail(email)) {
+    if (await Database.users.get.byEmail(email)) {
       return new Response(
         JSON.stringify({
           message: ErrorCode.API_AUTH_EMAIL_ALREADY_IN_USE,
@@ -44,7 +44,7 @@ export const handler: Handlers = {
       );
     }
 
-    if (await Database.user.get.byUsername(username)) {
+    if (await Database.users.get.byUsername(username)) {
       return new Response(
         JSON.stringify({
           message: ErrorCode.API_AUTH_USERNAME_ALREADY_IN_USE,
@@ -58,7 +58,7 @@ export const handler: Handlers = {
     // TODO: Add check if generated UUID is already exists
     // TODO: Make uuid a little shorter or user a real number of a user in the app
 
-    await Database.user.insert({
+    await Database.users.insert({
       id: crypto.randomUUID(),
       email,
       username,

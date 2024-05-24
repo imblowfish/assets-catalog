@@ -1,23 +1,20 @@
 import { FreshContext } from "$fresh/server.ts";
-import type { Session } from "$/data/database/database.ts";
+import { Database, type Session } from "$/data/database/database.ts";
 
 export const handler = [
-  (_req: Request, ctx: FreshContext<Session>) => {
-    // TODO:
-    // const sessionId = req.headers.get("sessionId");
-    // if (sessionId) {
-    //   return ctx.next();
-    // }
-    // const session = await Database.session.get.bySessionId(sessionId);
-    // if (!session) {
-    //  return ctx.next();
-    // }
-    // ctx.state = {
-    //  ...session,
-    // } satisfies Session;
+  async (req: Request, ctx: FreshContext<Session>) => {
+    const sessionId = req.headers.get("sessionId");
+    if (!sessionId) {
+      return ctx.next();
+    }
+
+    const session = await Database.sessions.get.bySessionId(sessionId);
+    if (!session) {
+      return ctx.next();
+    }
+
     ctx.state = {
-      id: "123",
-      userId: "321",
+      ...session
     } satisfies Session;
 
     return ctx.next();

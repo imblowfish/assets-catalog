@@ -1,6 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
 import { Header } from "$/components/Header.tsx";
-import { Login } from "$/islands/Login.tsx";
+import { Registration } from "$/islands/Registration.tsx";
 
 export default function Register() {
   return (
@@ -10,7 +10,7 @@ export default function Register() {
       </Head>
       <main>
         <Header />
-        <Login />
+        <Registration />
       </main>
     </>
   );

@@ -5,11 +5,11 @@ import { Database } from "$/data/database/database.ts";
 
 export const handler: Handlers = {
   async GET(_req, ctx) {
-    const userId = ctx.params.userId;
-    if (!userId) {
+    const username = ctx.params.username;
+    if (!username) {
       return new Response(
         JSON.stringify({
-          message: ErrorCode.API_USER_USER_ID_IS_NOT_SET,
+          message: ErrorCode.API_USER_USERNAME_IS_NOT_SET,
         }),
         {
           status: HttpCode.BadRequest,
@@ -17,11 +17,11 @@ export const handler: Handlers = {
       );
     }
 
-    const user = await Database.users.get.byUserId(userId);
+    const user = await Database.users.get.byUserId(username);
     if (!user) {
       return new Response(
         JSON.stringify({
-          message: ErrorCode.API_USER_USER_ID_IS_UNKNOWN,
+          message: ErrorCode.API_USER_USERNAME_IS_UNKNOWN,
         }),
         {
           status: HttpCode.NotFound,
