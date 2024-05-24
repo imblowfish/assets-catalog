@@ -8,7 +8,7 @@ import {
 } from "$/components/GalleryGrid.tsx";
 // import { Button } from "$/components/Button.tsx";
 import { FreshContext } from "$fresh/server.ts";
-import { Asset, Session } from "$/data/database/database.ts";
+import { Asset, Session, User } from "$/data/database/database.ts";
 import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function HomePage(
@@ -23,7 +23,7 @@ export default async function HomePage(
     );
   }
 
-  const resp = await fetch(
+  let resp = await fetch(
     `http://localhost:8000/api/v0.1/user/${session.username}/assets`
   );
   if (resp.status !== HttpCode.Ok) {
@@ -34,6 +34,15 @@ export default async function HomePage(
 
   const assets = (await resp.json()) as Asset[];
 
+  resp = await fetch(`http://localhost:8000/api/v0.1/user/${session.username}`);
+  if (resp.status !== HttpCode.Ok) {
+    throw new Error(
+      `API returned error [${resp.status}]: ${await resp.text()}`
+    );
+  }
+
+  const user = (await resp.json()) as User;
+
   return (
     <>
       <Head>
@@ -41,9 +50,9 @@ export default async function HomePage(
       </Head>
       <main>
         <Header
-        // search
-        // actions
-        // avatar
+          // search
+          // actions
+          user={user}
         />
         {/* <p class="text-2xl ml-4 mt-4">Pinned</p>
         <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>

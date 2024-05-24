@@ -1,9 +1,13 @@
-export interface User {
+export interface UserUnsafe {
   id: string;
   email: string;
   username: string;
   password: string;
+  url: string;
+  htmlUrl: string;
 }
+
+export type User = Omit<UserUnsafe, "password" | "email">;
 
 export interface Session {
   id: string;
@@ -23,11 +27,15 @@ export interface Asset {
 export interface DatabaseBackend {
   version: string;
   users: {
-    insert: (user: User) => Promise<void>;
+    insert: (user: UserUnsafe) => Promise<void>;
     get: {
       byUserId: (userId: string) => Promise<User | null>;
-      byEmail: (email: string) => Promise<User | null>;
       byUsername: (username: string) => Promise<User | null>;
+    };
+    unsafe: {
+      get: {
+        byEmail: (email: string) => Promise<UserUnsafe | null>;
+      };
     };
   };
   sessions: {
@@ -41,6 +49,6 @@ export interface DatabaseBackend {
     insert: (asset: Asset) => Promise<void>;
     get: {
       byUserId: (userId: string) => Promise<Asset[]>;
-    }
+    };
   };
 }

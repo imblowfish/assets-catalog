@@ -5,6 +5,7 @@ import {
   DatabaseBackend,
   Session,
   User,
+  UserUnsafe,
 } from "$/data/database/backend/db_api.ts";
 
 const config = await load({
@@ -21,7 +22,7 @@ console.log(`DATABASE_PATH=${databasePath}`);
 
 const kv = await Deno.openKv(databasePath);
 
-async function insertUser(user: User) {
+async function insertUser(user: UserUnsafe) {
   const primaryKey = ["users", user.id];
   const byEmailKey = ["users_by_email", user.email];
   const byUsernameKey = ["users_by_username", user.username];
@@ -48,17 +49,33 @@ async function insertUser(user: User) {
 
 async function getUserByUserId(userId: string) {
   const primaryKey = ["users", userId];
-  return (await kv.get<User>(primaryKey)).value as User | null;
+  const user = (await kv.get<User>(primaryKey)).value as User | null;
+  if (!user) {
+    return user;
+  }
+  return {
+    ...user,
+    password: undefined,
+    email: undefined,
+  } as User;
 }
 
-async function getUserByEmail(email: string) {
+async function getUserByEmailUnsafe(email: string) {
   const byEmailKey = ["users_by_email", email];
-  return (await kv.get<User>(byEmailKey)).value as User | null;
+  return (await kv.get<UserUnsafe>(byEmailKey)).value as UserUnsafe | null;
 }
 
 async function getUserByUsername(username: string) {
   const byUsernameKey = ["users_by_username", username];
-  return (await kv.get<User>(byUsernameKey)).value as User | null;
+  const user = (await kv.get<User>(byUsernameKey)).value as User | null;
+  if (!user) {
+    return user;
+  }
+  return {
+    ...user,
+    password: undefined,
+    email: undefined,
+  } as User;
 }
 
 async function insertSession(session: Session) {
@@ -119,8 +136,12 @@ export const databaseBackend = {
     insert: insertUser,
     get: {
       byUserId: getUserByUserId,
-      byEmail: getUserByEmail,
       byUsername: getUserByUsername,
+    },
+    unsafe: {
+      get: {
+        byEmail: getUserByEmailUnsafe,
+      },
     },
   },
   sessions: {
@@ -134,6 +155,6 @@ export const databaseBackend = {
     insert: insertAsset,
     get: {
       byUserId: getAssetsByUserId,
-    }
+    },
   },
 } satisfies DatabaseBackend;

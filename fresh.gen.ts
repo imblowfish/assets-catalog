@@ -8,6 +8,7 @@ import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_v0_1_auth_login from "./routes/api/v0.1/auth/login.ts";
 import * as $api_v0_1_auth_logout from "./routes/api/v0.1/auth/logout.ts";
 import * as $api_v0_1_auth_registration from "./routes/api/v0.1/auth/registration.ts";
+import * as $api_v0_1_user_username_ from "./routes/api/v0.1/user/[username].ts";
 import * as $api_v0_1_user_username_assets from "./routes/api/v0.1/user/[username]/assets.ts";
 import * as $api_v0_assets from "./routes/api/v0/assets.ts";
 import * as $api_v0_assets_assetId_ from "./routes/api/v0/assets/[assetId].ts";
@@ -18,6 +19,7 @@ import * as $auth_login from "./routes/auth/login.tsx";
 import * as $auth_registration from "./routes/auth/registration.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $new_asset from "./routes/new/asset.tsx";
+import * as $user_username_ from "./routes/user/[username].tsx";
 import * as $users_username_ from "./routes/users/[username].tsx";
 import * as $Actions from "./islands/Actions.tsx";
 import * as $ActionsButton from "./islands/ActionsButton.tsx";
@@ -35,6 +37,7 @@ const manifest = {
     "./routes/api/v0.1/auth/login.ts": $api_v0_1_auth_login,
     "./routes/api/v0.1/auth/logout.ts": $api_v0_1_auth_logout,
     "./routes/api/v0.1/auth/registration.ts": $api_v0_1_auth_registration,
+    "./routes/api/v0.1/user/[username].ts": $api_v0_1_user_username_,
     "./routes/api/v0.1/user/[username]/assets.ts":
       $api_v0_1_user_username_assets,
     "./routes/api/v0/assets.ts": $api_v0_assets,
@@ -46,6 +49,7 @@ const manifest = {
     "./routes/auth/registration.tsx": $auth_registration,
     "./routes/index.tsx": $index,
     "./routes/new/asset.tsx": $new_asset,
+    "./routes/user/[username].tsx": $user_username_,
     "./routes/users/[username].tsx": $users_username_,
   },
   islands: {

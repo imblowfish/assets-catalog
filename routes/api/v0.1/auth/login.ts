@@ -34,7 +34,7 @@ export const handler: Handlers = {
       );
     }
 
-    const user = await Database.users.get.byEmail(email);
+    const user = await Database.users.unsafe.get.byEmail(email);
     if (!user) {
       return new Response(
         JSON.stringify({

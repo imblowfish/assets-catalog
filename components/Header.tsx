@@ -2,6 +2,7 @@ import { Avatar } from "$/components/Avatar.tsx";
 import { Input } from "$/components/Input.tsx";
 import { SearchIcon } from "$/components/Icons.tsx";
 import { ActionsButton } from "$/islands/ActionsButton.tsx";
+import { User } from "$/data/database/database.ts";
 
 export interface LogoProps {
   sx?: string;
@@ -21,7 +22,7 @@ export const Logo = (props: LogoProps) => {
 export interface HeaderProps {
   search?: boolean;
   actions?: boolean;
-  avatar?: boolean;
+  user?: User;
 }
 
 export const Header = (props: HeaderProps) => {
@@ -37,7 +38,7 @@ export const Header = (props: HeaderProps) => {
             />
           )}
           {props.actions && <ActionsButton />}
-          {props.avatar && <Avatar />}
+          {props.user && <Avatar user={props.user} />}
         </div>
       </div>
     </header>
