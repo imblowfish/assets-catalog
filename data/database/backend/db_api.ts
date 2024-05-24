@@ -11,11 +11,30 @@ export interface Session {
   // TODO: Add session expiration
 }
 
-export interface DatabaseBackend {
-  insertUser: (user: User) => Promise<void>;
-  getUserByEmail: (email: string) => Promise<User | null>;
-  getUserByUsername: (username: string) => Promise<User | null>;
+export interface Asset {
+  id: string;
+  userId: string;
+  collectionId: string;
+}
 
-  insertSession: (session: Session) => Promise<void>;
-  deleteSession: (sessionId: string) => Promise<void>;
+export interface DatabaseBackend {
+  version: string;
+  user: {
+    insert: (user: User) => Promise<void>;
+    get: {
+      byUserId: (userId: string) => Promise<User | null>;
+      byEmail: (email: string) => Promise<User | null>;
+      byUsername: (username: string) => Promise<User | null>;
+    };
+  };
+  session: {
+    insert: (session: Session) => Promise<void>;
+    delete: (sessionId: string) => Promise<void>;
+    get: {
+      bySessionId: (sessionId: string) => Promise<Session | null>;
+    };
+  };
+  asset: {
+    insert: (asset: Asset) => Promise<void>;
+  };
 }
