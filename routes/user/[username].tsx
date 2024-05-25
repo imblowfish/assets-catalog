@@ -19,7 +19,7 @@ export default async function UserPage(
 
   const username = ctx.params.username;
 
-  const resp = await fetch(`http://localhost:8000/api/v0.1/user/${username}`);
+  const resp = await fetch(`http://localhost:8000/api/v0/user/${username}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
   }

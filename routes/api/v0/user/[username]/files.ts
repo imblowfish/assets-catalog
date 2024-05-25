@@ -39,7 +39,7 @@ export const handler: Handlers = {
         name: file.name,
         type: file.type,
         size: file.size,
-        url: `http://localhost:8000/api/v0.1/user/${username}/file/${file.name}`,
+        url: `http://localhost:8000/api/v0/user/${username}/file/${file.name}`,
         lastModified: file.lastModified,
       } satisfies FileCreationResponse),
       {

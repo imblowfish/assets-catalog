@@ -62,7 +62,7 @@ export const handler: Handlers = {
       email,
       username,
       password: await bcrypt.hash(password, await bcrypt.genSalt()),
-      url: `http://localhost:8000/api/v0.1/user/${username}`,
+      url: `http://localhost:8000/api/v0/user/${username}`,
       htmlUrl: `http://localhost:8000/user/${username}`,
     });
 

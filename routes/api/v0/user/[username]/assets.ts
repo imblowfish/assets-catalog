@@ -36,7 +36,7 @@ export const handler: Handlers = {
       collectionId: "default",
       username: username,
       objectUrl: objectUrl,
-      url: `http://localhost:8000/api/v0.1/asset/${assetId}`,
+      url: `http://localhost:8000/api/v0/asset/${assetId}`,
       htmlUrl: `http://localhost:8000/asset/${assetId}`,
     } satisfies Asset;
 

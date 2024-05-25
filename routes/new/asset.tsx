@@ -17,7 +17,7 @@ export default async function NewAsset(
     );
   }
 
-  const resp = await fetch(`http://localhost:8000/api/v0.1/user/${session.username}`);
+  const resp = await fetch(`http://localhost:8000/api/v0/user/${session.username}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(
       `API returned error [${resp.status}]: ${await resp.text()}`

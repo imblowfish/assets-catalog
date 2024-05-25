@@ -23,7 +23,7 @@ export const Login = () => {
     const email = inputEmailRef.current.value;
     const password = inputPasswordRef.current.value;
 
-    const resp = await fetch("http://localhost:8000/api/v0.1/auth/login", {
+    const resp = await fetch("http://localhost:8000/api/v0/auth/login", {
       method: "POST",
       headers: {
         Authorization: `Basic ${btoa(`${email}:${password}`)}`,

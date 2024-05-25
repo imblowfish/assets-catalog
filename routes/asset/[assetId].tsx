@@ -20,14 +20,14 @@ export default async function AssetPage(
 
   const assetId = ctx.params.assetId;
 
-  let resp = await fetch(`http://localhost:8000/api/v0.1/asset/${assetId}`);
+  let resp = await fetch(`http://localhost:8000/api/v0/asset/${assetId}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
   }
 
   const asset = (await resp.json()) as Asset;
 
-  resp = await fetch(`http://localhost:8000/api/v0.1/user/${asset.username}`);
+  resp = await fetch(`http://localhost:8000/api/v0/user/${asset.username}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
   }

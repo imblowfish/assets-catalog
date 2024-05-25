@@ -30,7 +30,7 @@ export const Registration = () => {
     const username = inputUsernameRef.current.value;
 
     const resp = await fetch(
-      "http://localhost:8000/api/v0.1/auth/registration",
+      "http://localhost:8000/api/v0/auth/registration",
       {
         method: "POST",
         headers: {

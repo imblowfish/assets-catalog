@@ -29,7 +29,7 @@ type SidebarProps = Asset;
 
 export const Sidebar = (props: SidebarProps) => {
   const deleteAsset = useCallback(async () => {
-    let resp = await fetch(`/api/v0.1/asset/${props.id}`, {
+    let resp = await fetch(`/api/v0/asset/${props.id}`, {
       method: "DELETE",
     });
 

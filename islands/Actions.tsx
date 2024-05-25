@@ -38,7 +38,7 @@ export function CreateNewAsset(props: CreateNewAssetProps) {
     formData.set("file", file);
 
     let resp = await fetch(
-      `http://localhost:8000/api/v0.1/user/${props.username}/files`,
+      `http://localhost:8000/api/v0/user/${props.username}/files`,
       {
         method: "POST",
         body: formData,
@@ -50,7 +50,7 @@ export function CreateNewAsset(props: CreateNewAssetProps) {
     const fileResponse = (await resp.json()) as FileCreationResponse;
 
     resp = await fetch(
-      `http://localhost:8000/api/v0.1/user/${props.username}/assets`,
+      `http://localhost:8000/api/v0/user/${props.username}/assets`,
       {
         method: "POST",
         headers: {
