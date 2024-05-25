@@ -49,6 +49,7 @@ export interface DatabaseBackend {
   };
   assets: {
     insert: (asset: Asset) => Promise<void>;
+    delete: (assetId: string) => Promise<void>;
     get: {
       byAssetId: (assetId: string) => Promise<Asset | null>;
       byUsername: (username: string) => Promise<Asset[]>;

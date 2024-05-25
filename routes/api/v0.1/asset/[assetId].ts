@@ -22,4 +22,24 @@ export const handler: Handlers = {
       status: HttpCode.Ok,
     });
   },
+  async DELETE(_req, ctx) {
+    const assetId = ctx.params.assetId;
+    const asset = await Database.assets.get.byAssetId(assetId);
+    if (!asset) {
+      return new Response(
+        JSON.stringify({
+          message: ErrorCode.API_ASSET_NOT_FOUND,
+        }),
+        {
+          status: HttpCode.NotFound,
+        }
+      );
+    }
+
+    await Database.assets.delete(assetId);
+
+    return new Response(null, {
+      status: HttpCode.Ok,
+    });
+  },
 };

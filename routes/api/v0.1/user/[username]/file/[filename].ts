@@ -11,4 +11,14 @@ export const handler: Handlers = {
       status: HttpCode.Ok,
     });
   },
+  async DELETE(_req, ctx) {
+    const username = ctx.params.username;
+    const filename = ctx.params.filename;
+
+    await Storage.object.delete(username, filename);
+
+    return new Response(null, {
+      status: HttpCode.Ok,
+    });
+  },
 };

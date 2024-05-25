@@ -7,7 +7,6 @@ import {
   User,
   UserUnsafe,
 } from "$/data/database/backend/db_api.ts";
-import { asset } from "$fresh/runtime.ts";
 
 const config = await load({
   envPath: ".env",
@@ -119,6 +118,27 @@ async function insertAsset(asset: Asset) {
     .commit();
 }
 
+async function deleteAsset(assetId: string) {
+  const asset = await getAssetByAssetId(assetId);
+  if (!asset) {
+    return;
+  }
+  const primaryKey = ["assets", assetId];
+  const byUserIdKey = ["assets_by_username", asset.username, assetId];
+  const byCollectionIdKey = [
+    "assets_by_collection_id",
+    asset.collectionId,
+    assetId,
+  ];
+
+  await kv
+    .atomic()
+    .delete(primaryKey)
+    .delete(byUserIdKey)
+    .delete(byCollectionIdKey)
+    .commit();
+}
+
 async function getAssetByAssetId(assetId: string) {
   const primaryKey = ["assets", assetId];
   return (await kv.get<Asset>(primaryKey)).value as Asset | null;
@@ -159,6 +179,7 @@ export const databaseBackend = {
   },
   assets: {
     insert: insertAsset,
+    delete: deleteAsset,
     get: {
       byAssetId: getAssetByAssetId,
       byUsername: getAssetsByUsername,

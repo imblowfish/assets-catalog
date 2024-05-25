@@ -29,13 +29,20 @@ type SidebarProps = Asset;
 
 export const Sidebar = (props: SidebarProps) => {
   const deleteAsset = useCallback(async () => {
-    const resp = await fetch(`/api/v0/assets/${props.id}`, {
+    let resp = await fetch(`/api/v0.1/asset/${props.id}`, {
       method: "DELETE",
     });
 
     if (resp.status !== 200) {
-      console.error(`API returned ${resp.status}: ${await resp.text()}`);
-      return;
+      throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
+    }
+
+    resp = await fetch(props.objectUrl, {
+      method: "DELETE",
+    });
+
+    if (resp.status !== 200) {
+      throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
     }
 
     globalThis.location.href = "/";
@@ -64,7 +71,7 @@ export const Sidebar = (props: SidebarProps) => {
           onClick={() => {
             if (
               !confirm(
-                "Are you sure you want to delete this asset? This action is permanent",
+                "Are you sure you want to delete this asset? This action is permanent"
               )
             ) {
               return;
@@ -81,7 +88,7 @@ export const Sidebar = (props: SidebarProps) => {
             const anchor = document.createElement("a");
             document.body.appendChild(anchor);
             anchor.download = props.url.split("/").at(-1)!;
-            anchor.href = props.url;
+            anchor.href = props.objectUrl;
             anchor.click();
             document.body.removeChild(anchor);
           }}
