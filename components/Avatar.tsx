@@ -1,5 +1,3 @@
-import { User } from "$/data/database/database.ts";
-
 export interface AvatarProps {
   sx?: string;
   userUrl: string;

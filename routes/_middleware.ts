@@ -10,13 +10,11 @@ export const handler = [
 
     const cookies = getCookies(req.headers);
     if (!cookies.sessionId) {
-      // console.log("'sessionId' not found in cookies");
       return ctx.next();
     }
 
     const session = await Database.sessions.get.bySessionId(cookies.sessionId);
     if (!session) {
-      // console.log("Can't find session by provided 'sessionId'");
       return ctx.next();
     }
 

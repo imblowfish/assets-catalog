@@ -1,6 +1,5 @@
 import { Head } from "$fresh/runtime.ts";
 import { Header } from "$/components/Header.tsx";
-import { AssetData } from "$/data/database.ts";
 import { AssetView } from "$/islands/AssetView.tsx";
 import { FreshContext } from "$fresh/server.ts";
 import { Asset, Session, User } from "$/data/database/database.ts";

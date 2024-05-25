@@ -33,8 +33,6 @@ export default async function HomePage(
 
   const assets = (await resp.json()) as Asset[];
 
-  console.log(JSON.stringify(assets, null, 2));
-
   resp = await fetch(`http://localhost:8000/api/v0/user/${session.username}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(

@@ -26,8 +26,6 @@ export default async function UserPage(
 
   const user = (await resp.json()) as User;
 
-  console.log(JSON.stringify(user));
-
   return (
     <>
       <Head>
@@ -36,7 +34,7 @@ export default async function UserPage(
       <main>
         <Header /* avatar */ />
         <div class="flex flex-col items-center m-4">
-          <AvatarFull user={user} />
+          <AvatarFull userUrl={user.htmlUrl} />
           <p class="text-2xl mt-4">{username}</p>
           {/* TODO: Add information about me */}
         </div>
