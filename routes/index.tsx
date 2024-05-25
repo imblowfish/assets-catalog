@@ -3,7 +3,6 @@ import { Header } from "$/components/Header.tsx";
 import {
   GalleryGrid,
   GalleryGridItem,
-  // GalleryGridItem,
   // GalleryGridItemV2,
 } from "$/components/GalleryGrid.tsx";
 // import { Button } from "$/components/Button.tsx";
@@ -63,10 +62,8 @@ export default async function HomePage(
           {assets.map((asset) => (
             <GalleryGridItem
               key={asset.id}
-              id={asset.id}
-              title={asset.title}
-              // author="Some author"
-              thumbnailUrl={`${asset.url}`}
+              user={user}
+              asset={asset}
             />
           ))}
         </GalleryGrid>

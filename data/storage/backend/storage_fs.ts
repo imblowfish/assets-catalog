@@ -12,8 +12,6 @@ const config = await load({
   export: true,
 });
 
-const defaultBucketName = "default";
-
 const storagePath = Deno.env.get("STORAGE_PATH") || config["STORAGE_PATH"];
 
 console.log("Storage initialization");
@@ -37,15 +35,13 @@ async function createObject(object: StorageObject) {
   await Deno.writeFile(`${path}/${object.name}`, object.data);
 }
 
-async function getObject(name: string) {
-  const bucketName = defaultBucketName;
+async function getObject(bucketName: string, name: string) {
   const path = `${storagePath}/${bucketName}`;
   const objectData = await Deno.readFile(`${path}/${name}`);
   return objectData;
 }
 
-async function deleteObject(name: string) {
-  const bucketName = defaultBucketName;
+async function deleteObject(bucketName: string, name: string) {
   const path = `${storagePath}/${bucketName}`;
   await Deno.remove(`${path}/${name}`);
 }

@@ -15,7 +15,7 @@ export interface StorageBackend {
   }
   object: {
     create: (object: StorageObject) => Promise<void>;
-    get: (name: string) => Promise<Uint8Array>;
-    delete: (name: string) => Promise<void>;
+    get: (bucketName: string, name: string) => Promise<Uint8Array>;
+    delete: (bucketName: string, name: string) => Promise<void>;
   }
 }

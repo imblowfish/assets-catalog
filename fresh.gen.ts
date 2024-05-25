@@ -8,9 +8,9 @@ import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_v0_1_auth_login from "./routes/api/v0.1/auth/login.ts";
 import * as $api_v0_1_auth_logout from "./routes/api/v0.1/auth/logout.ts";
 import * as $api_v0_1_auth_registration from "./routes/api/v0.1/auth/registration.ts";
-import * as $api_v0_1_storage_file from "./routes/api/v0.1/storage/file.ts";
 import * as $api_v0_1_user_username_ from "./routes/api/v0.1/user/[username].ts";
 import * as $api_v0_1_user_username_assets from "./routes/api/v0.1/user/[username]/assets.ts";
+import * as $api_v0_1_user_username_file_filename_ from "./routes/api/v0.1/user/[username]/file/[filename].ts";
 import * as $api_v0_1_user_username_files from "./routes/api/v0.1/user/[username]/files.ts";
 import * as $api_v0_assets from "./routes/api/v0/assets.ts";
 import * as $api_v0_assets_assetId_ from "./routes/api/v0/assets/[assetId].ts";
@@ -38,10 +38,11 @@ const manifest = {
     "./routes/api/v0.1/auth/login.ts": $api_v0_1_auth_login,
     "./routes/api/v0.1/auth/logout.ts": $api_v0_1_auth_logout,
     "./routes/api/v0.1/auth/registration.ts": $api_v0_1_auth_registration,
-    "./routes/api/v0.1/storage/file.ts": $api_v0_1_storage_file,
     "./routes/api/v0.1/user/[username].ts": $api_v0_1_user_username_,
     "./routes/api/v0.1/user/[username]/assets.ts":
       $api_v0_1_user_username_assets,
+    "./routes/api/v0.1/user/[username]/file/[filename].ts":
+      $api_v0_1_user_username_file_filename_,
     "./routes/api/v0.1/user/[username]/files.ts": $api_v0_1_user_username_files,
     "./routes/api/v0/assets.ts": $api_v0_assets,
     "./routes/api/v0/assets/[assetId].ts": $api_v0_assets_assetId_,

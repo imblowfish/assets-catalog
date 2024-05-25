@@ -36,8 +36,8 @@ export const handler: Handlers = {
       collectionId: "default",
       username: username,
       objectUrl: objectUrl,
-      url: `http://localhost:8000/api/v0.1/user/${username}/assets/${assetId}`,
-      htmlUrl: `http://localhost:8000/user/${username}/assets/${assetId}`,
+      url: `http://localhost:8000/api/v0.1/asset/${assetId}`,
+      htmlUrl: `http://localhost:8000/asset/${assetId}`,
     } satisfies Asset;
 
     await Database.assets.insert(asset);

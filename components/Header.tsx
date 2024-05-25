@@ -38,7 +38,7 @@ export const Header = (props: HeaderProps) => {
             />
           )}
           {props.showActions && <ActionsButton />}
-          {props.user && <Avatar user={props.user} />}
+          {props.user && <Avatar userUrl={props.user.htmlUrl} />}
         </div>
       </div>
     </header>
