@@ -50,6 +50,7 @@ export interface DatabaseBackend {
   assets: {
     insert: (asset: Asset) => Promise<void>;
     get: {
+      byAssetId: (assetId: string) => Promise<Asset | null>;
       byUsername: (username: string) => Promise<Asset[]>;
     };
   };

@@ -7,6 +7,7 @@ import {
   User,
   UserUnsafe,
 } from "$/data/database/backend/db_api.ts";
+import { asset } from "$fresh/runtime.ts";
 
 const config = await load({
   envPath: ".env",
@@ -118,6 +119,11 @@ async function insertAsset(asset: Asset) {
     .commit();
 }
 
+async function getAssetByAssetId(assetId: string) {
+  const primaryKey = ["assets", assetId];
+  return (await kv.get<Asset>(primaryKey)).value as Asset | null;
+}
+
 async function getAssetsByUsername(username: string) {
   const byUserIdKey = ["assets_by_username", username];
   const assets = (
@@ -154,6 +160,7 @@ export const databaseBackend = {
   assets: {
     insert: insertAsset,
     get: {
+      byAssetId: getAssetByAssetId,
       byUsername: getAssetsByUsername,
     },
   },

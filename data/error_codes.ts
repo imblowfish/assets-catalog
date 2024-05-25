@@ -10,5 +10,6 @@ export enum ErrorCode {
   API_USER_USERNAME_IS_UNKNOWN = "can't find user using provided 'username'",
   API_ASSET_EMPTY_TITLE = "title doesn't have 'title'",
   API_ASSET_OBJECT_URL_IS_EMPTY = "asset's 'objectUrl' is empty",
-  API_STORAGE_FILE_IS_NULL = "file is null"
+  API_STORAGE_FILE_IS_NULL = "file is null",
+  API_ASSET_NOT_FOUND = "can't find asset",
 }
