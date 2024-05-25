@@ -34,6 +34,8 @@ export default async function HomePage(
 
   const assets = (await resp.json()) as Asset[];
 
+  console.log(JSON.stringify(assets, null, 2));
+
   resp = await fetch(`http://localhost:8000/api/v0.1/user/${session.username}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(
@@ -51,7 +53,7 @@ export default async function HomePage(
       <main>
         <Header
           // search
-          // actions
+          showActions
           user={user}
         />
         {/* <p class="text-2xl ml-4 mt-4">Pinned</p>

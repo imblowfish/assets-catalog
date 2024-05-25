@@ -17,11 +17,13 @@ export interface Session {
 
 export interface Asset {
   id: string;
-  userId: string;
+  username: string;
   collectionId: string;
   title: string;
   description: string;
+  objectUrl: string;
   url: string;
+  htmlUrl: string;
 }
 
 export interface DatabaseBackend {
@@ -48,7 +50,7 @@ export interface DatabaseBackend {
   assets: {
     insert: (asset: Asset) => Promise<void>;
     get: {
-      byUserId: (userId: string) => Promise<Asset[]>;
+      byUsername: (username: string) => Promise<Asset[]>;
     };
   };
 }

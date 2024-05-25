@@ -12,22 +12,22 @@ import {
 import { HttpCode } from "$/data/http_codes.ts";
 
 export const Registration = () => {
-  const refInputEmail = useRef<HTMLInputElement | null>(null);
-  const refInputPassword = useRef<HTMLInputElement | null>(null);
-  const refInputUsername = useRef<HTMLInputElement | null>(null);
+  const inputEmailRef = useRef<HTMLInputElement | null>(null);
+  const inputPasswordRef = useRef<HTMLInputElement | null>(null);
+  const inputUsernameRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmitCallback = useCallback(async () => {
     if (
-      !refInputEmail.current ||
-      !refInputPassword.current ||
-      !refInputUsername.current
+      !inputEmailRef.current ||
+      !inputPasswordRef.current ||
+      !inputUsernameRef.current
     ) {
       throw new Error("Can't get all necessary data to submit");
     }
 
-    const email = refInputEmail.current.value;
-    const password = refInputPassword.current.value;
-    const username = refInputUsername.current.value;
+    const email = inputEmailRef.current.value;
+    const password = inputPasswordRef.current.value;
+    const username = inputUsernameRef.current.value;
 
     const resp = await fetch(
       "http://localhost:8000/api/v0.1/auth/registration",
@@ -69,7 +69,7 @@ export const Registration = () => {
               event.preventDefault();
               onSubmitCallback()
                 .then(() => {
-                  globalThis.location.href = "http://localhost:8000/auth/login";
+                  globalThis.location.href = "/auth/login";
                 })
                 .catch((err) => {
                   throw err;
@@ -77,21 +77,21 @@ export const Registration = () => {
             }}
           >
             <Input
-              ref={refInputEmail}
+              ref={inputEmailRef}
               required
               type="email"
               placeholder="Email"
               endIcon={<AtIcon />}
             />
             <Input
-              ref={refInputPassword}
+              ref={inputPasswordRef}
               required
               type="password"
               placeholder="Password"
               endIcon={<EyeIcon />}
             />
             <Input
-              ref={refInputUsername}
+              ref={inputUsernameRef}
               required
               type="text"
               name="username"

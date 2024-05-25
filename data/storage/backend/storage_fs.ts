@@ -1,6 +1,7 @@
 import { load } from "$std/dotenv/mod.ts";
 import {
   StorageBackend,
+  StorageBucket,
   StorageObject,
 } from "$/data/storage/backend/storage_api.ts";
 
@@ -22,10 +23,15 @@ await Deno.mkdir(storagePath, {
   recursive: true,
 });
 
+async function createBucket(bucket: StorageBucket) {
+  await Deno.mkdir(`${storagePath}/${bucket.name}`, {
+    recursive: true,
+  });
+}
+
 async function createObject(object: StorageObject) {
-  const bucketName = defaultBucketName;
-  const path = `${storagePath}/${bucketName}`;
-  await Deno.mkdir(`${storagePath}/${bucketName}`, {
+  const path = `${storagePath}/${object.bucket}`;
+  await Deno.mkdir(path, {
     recursive: true,
   });
   await Deno.writeFile(`${path}/${object.name}`, object.data);
@@ -46,6 +52,9 @@ async function deleteObject(name: string) {
 
 export const storageBackend = {
   version: "v0.0.0",
+  bucket: {
+    create: createBucket,
+  },
   object: {
     create: createObject,
     get: getObject,

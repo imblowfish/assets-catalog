@@ -29,7 +29,7 @@ export interface FileUploaderProps {
   required?: boolean;
 }
 
-export const FileUploader = (props: FileUploaderProps) => {
+export const FileUploader = forwardRef((props: FileUploaderProps, ref: ForwardedRef<HTMLInputElement>) => {
   const [fileSelected, setFileSelected] = useState(false);
 
   const fileReaderRef = useRef(new FileReader());
@@ -53,6 +53,7 @@ export const FileUploader = (props: FileUploaderProps) => {
   return (
     <div class="h-96 border border-black border-dashed hover:border-solid rounded flex flex-col justify-center items-center relative">
       <input
+        ref={ref}
         class="absolute top-0 left-0 w-full h-full opacity-0"
         type="file"
         name={props.name}
@@ -75,4 +76,4 @@ export const FileUploader = (props: FileUploaderProps) => {
       <ImagePreview ref={assetRef} />
     </div>
   );
-};
+});

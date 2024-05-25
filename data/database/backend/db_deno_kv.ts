@@ -102,7 +102,7 @@ async function deleteSession(sessionId: string) {
 
 async function insertAsset(asset: Asset) {
   const primaryKey = ["assets", asset.id];
-  const byUserIdKey = ["assets_by_user_id", asset.userId, asset.id];
+  const byUserIdKey = ["assets_by_username", asset.username, asset.id];
   const byCollectionIdKey = [
     "assets_by_collection_id",
     asset.collectionId,
@@ -118,8 +118,8 @@ async function insertAsset(asset: Asset) {
     .commit();
 }
 
-async function getAssetsByUserId(userId: string) {
-  const byUserIdKey = ["assets_by_user_id", userId];
+async function getAssetsByUsername(username: string) {
+  const byUserIdKey = ["assets_by_username", username];
   const assets = (
     await Array.fromAsync(
       kv.list<Asset>({
@@ -154,7 +154,7 @@ export const databaseBackend = {
   assets: {
     insert: insertAsset,
     get: {
-      byUserId: getAssetsByUserId,
+      byUsername: getAssetsByUsername,
     },
   },
 } satisfies DatabaseBackend;

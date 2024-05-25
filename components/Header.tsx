@@ -21,7 +21,7 @@ export const Logo = (props: LogoProps) => {
 
 export interface HeaderProps {
   search?: boolean;
-  actions?: boolean;
+  showActions?: boolean;
   user?: User;
 }
 
@@ -37,7 +37,7 @@ export const Header = (props: HeaderProps) => {
               endIcon={<SearchIcon />}
             />
           )}
-          {props.actions && <ActionsButton />}
+          {props.showActions && <ActionsButton />}
           {props.user && <Avatar user={props.user} />}
         </div>
       </div>

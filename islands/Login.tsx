@@ -12,16 +12,16 @@ import {
 import { HttpCode } from "$/data/http_codes.ts";
 
 export const Login = () => {
-  const refInputEmail = useRef<HTMLInputElement | null>(null);
-  const refInputPassword = useRef<HTMLInputElement | null>(null);
+  const inputEmailRef = useRef<HTMLInputElement | null>(null);
+  const inputPasswordRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmitCallback = useCallback(async () => {
-    if (!refInputEmail.current || !refInputPassword.current) {
+    if (!inputEmailRef.current || !inputPasswordRef.current) {
       throw new Error("Can't get all necessary data to submit");
     }
 
-    const email = refInputEmail.current.value;
-    const password = refInputPassword.current.value;
+    const email = inputEmailRef.current.value;
+    const password = inputPasswordRef.current.value;
 
     const resp = await fetch("http://localhost:8000/api/v0.1/auth/login", {
       method: "POST",
@@ -60,7 +60,7 @@ export const Login = () => {
               event.preventDefault();
               onSubmitCallback()
                 .then(() => {
-                  globalThis.location.href = "http://localhost:8000/";
+                  globalThis.location.href = "/";
                 })
                 .catch((err) => {
                   throw err;
@@ -68,14 +68,14 @@ export const Login = () => {
             }}
           >
             <Input
-              ref={refInputEmail}
+              ref={inputEmailRef}
               required
               type="email"
               placeholder="Email"
               endIcon={<AtIcon />}
             />
             <Input
-              ref={refInputPassword}
+              ref={inputPasswordRef}
               required
               type="password"
               placeholder="Password"
