@@ -7,13 +7,13 @@ import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function UserPage(
   _req: Request,
-  ctx: FreshContext<Session>
+  ctx: FreshContext<Session>,
 ) {
   const session = ctx.state;
   if (!session?.id) {
     return Response.redirect(
       "http://localhost:8000/auth/login",
-      HttpCode.SeeOther
+      HttpCode.SeeOther,
     );
   }
 

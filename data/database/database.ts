@@ -1,6 +1,6 @@
-import type { User, Session, Asset } from "$/data/database/backend/db_api.ts";
+import type { Asset, Session, User } from "$/data/database/backend/db_api.ts";
 
 const database = (await import("$/data/database/backend/db_deno_kv.ts"))
   .databaseBackend;
 
-export { database as Database, User, Session, Asset };
+export { Asset, database as Database, Session, User };

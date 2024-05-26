@@ -15,12 +15,12 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.Unauthorized,
-        }
+        },
       );
     }
 
     const [email, password] = atob(authorization.replace("Basic ", "")).split(
-      ":"
+      ":",
     );
 
     if (!email || !password) {
@@ -30,7 +30,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.Unauthorized,
-        }
+        },
       );
     }
 
@@ -42,7 +42,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.Unauthorized,
-        }
+        },
       );
     }
 
@@ -53,7 +53,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.Unauthorized,
-        }
+        },
       );
     }
 

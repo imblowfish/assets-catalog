@@ -7,7 +7,7 @@ import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function NewAsset(
   _req: Request,
-  ctx: FreshContext<Session>
+  ctx: FreshContext<Session>,
 ) {
   const session = ctx.state;
   if (!session?.id) {
@@ -17,10 +17,12 @@ export default async function NewAsset(
     );
   }
 
-  const resp = await fetch(`http://localhost:8000/api/v0/user/${session.username}`);
+  const resp = await fetch(
+    `http://localhost:8000/api/v0/user/${session.username}`,
+  );
   if (resp.status !== HttpCode.Ok) {
     throw new Error(
-      `API returned error [${resp.status}]: ${await resp.text()}`
+      `API returned error [${resp.status}]: ${await resp.text()}`,
     );
   }
 

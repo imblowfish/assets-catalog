@@ -13,7 +13,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.BadRequest,
-        }
+        },
       );
     }
 
@@ -25,7 +25,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.NotFound,
-        }
+        },
       );
     }
 
@@ -35,7 +35,7 @@ export const handler: Handlers = {
       }),
       {
         status: HttpCode.Ok,
-      }
+      },
     );
   },
 };

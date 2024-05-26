@@ -18,7 +18,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.BadRequest,
-        }
+        },
       );
     }
 
@@ -35,16 +35,19 @@ export const handler: Handlers = {
     });
 
     return new Response(
-      JSON.stringify({
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        url: `http://localhost:8000/api/v0/user/${username}/file/${file.name}`,
-        lastModified: file.lastModified,
-      } satisfies FileCreationResponse),
+      JSON.stringify(
+        {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          url:
+            `http://localhost:8000/api/v0/user/${username}/file/${file.name}`,
+          lastModified: file.lastModified,
+        } satisfies FileCreationResponse,
+      ),
       {
         status: HttpCode.Created,
-      }
+      },
     );
   },
 };

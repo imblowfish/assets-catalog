@@ -15,7 +15,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.BadRequest,
-        }
+        },
       );
     }
 
@@ -24,7 +24,7 @@ export const handler: Handlers = {
         JSON.stringify({
           message: ErrorCode.API_ASSET_OBJECT_URL_IS_EMPTY,
         }),
-        { status: HttpCode.BadRequest }
+        { status: HttpCode.BadRequest },
       );
     }
 
@@ -55,7 +55,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.BadRequest,
-        }
+        },
       );
     }
 
@@ -67,7 +67,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.NotFound,
-        }
+        },
       );
     }
 

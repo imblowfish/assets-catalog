@@ -150,7 +150,7 @@ async function getAssetsByUsername(username: string) {
     await Array.fromAsync(
       kv.list<Asset>({
         prefix: byUserIdKey,
-      })
+      }),
     )
   ).map((record) => record.value);
   return assets;

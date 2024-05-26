@@ -42,7 +42,7 @@ export function CreateNewAsset(props: CreateNewAssetProps) {
       {
         method: "POST",
         body: formData,
-      }
+      },
     );
     if (resp.status !== HttpCode.Created) {
       throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
@@ -56,12 +56,14 @@ export function CreateNewAsset(props: CreateNewAssetProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title,
-          description,
-          objectUrl: fileResponse.url,
-        } satisfies AssetCreationRequest),
-      }
+        body: JSON.stringify(
+          {
+            title,
+            description,
+            objectUrl: fileResponse.url,
+          } satisfies AssetCreationRequest,
+        ),
+      },
     );
     if (resp.status !== HttpCode.Created) {
       throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);

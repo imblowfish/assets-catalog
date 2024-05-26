@@ -12,22 +12,22 @@ import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function HomePage(
   _req: Request,
-  ctx: FreshContext<Session>
+  ctx: FreshContext<Session>,
 ) {
   const session = ctx.state;
   if (!session?.id) {
     return Response.redirect(
       "http://localhost:8000/auth/login",
-      HttpCode.SeeOther
+      HttpCode.SeeOther,
     );
   }
 
   let resp = await fetch(
-    `http://localhost:8000/api/v0/user/${session.username}/assets`
+    `http://localhost:8000/api/v0/user/${session.username}/assets`,
   );
   if (resp.status !== HttpCode.Ok) {
     throw new Error(
-      `API returned error [${resp.status}]: ${await resp.text()}`
+      `API returned error [${resp.status}]: ${await resp.text()}`,
     );
   }
 
@@ -36,7 +36,7 @@ export default async function HomePage(
   resp = await fetch(`http://localhost:8000/api/v0/user/${session.username}`);
   if (resp.status !== HttpCode.Ok) {
     throw new Error(
-      `API returned error [${resp.status}]: ${await resp.text()}`
+      `API returned error [${resp.status}]: ${await resp.text()}`,
     );
   }
 
@@ -53,9 +53,11 @@ export default async function HomePage(
           showActions
           user={user}
         />
-        {/* <p class="text-2xl ml-4 mt-4">Pinned</p>
+        {
+          /* <p class="text-2xl ml-4 mt-4">Pinned</p>
         <GalleryGrid sx="gap-1 ml-4">{images}</GalleryGrid>
-        <p class="text-2xl ml-4 mt-12">Recently viewed</p> */}
+        <p class="text-2xl ml-4 mt-12">Recently viewed</p> */
+        }
         <GalleryGrid sx="gap-1 ml-4">
           {assets.map((asset) => (
             <GalleryGridItem

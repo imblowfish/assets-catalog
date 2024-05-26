@@ -19,7 +19,7 @@ export const handler = [
     }
 
     ctx.state = {
-      ...session
+      ...session,
     } satisfies Session;
 
     return ctx.next();

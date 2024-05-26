@@ -71,7 +71,7 @@ export const Sidebar = (props: SidebarProps) => {
           onClick={() => {
             if (
               !confirm(
-                "Are you sure you want to delete this asset? This action is permanent"
+                "Are you sure you want to delete this asset? This action is permanent",
               )
             ) {
               return;

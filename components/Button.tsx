@@ -1,3 +1,4 @@
+import { IS_BROWSER } from "$fresh/runtime.ts";
 import { VNode } from "preact";
 import { ForwardedRef, forwardRef, HTMLAttributes } from "preact/compat";
 

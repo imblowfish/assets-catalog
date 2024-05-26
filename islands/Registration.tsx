@@ -36,7 +36,7 @@ export const Registration = () => {
         headers: {
           Authorization: `Basic ${btoa(`${email}:${password}:${username}`)}`,
         },
-      }
+      },
     );
 
     if (resp.status !== HttpCode.Created) {
@@ -53,14 +53,16 @@ export const Registration = () => {
         <div class="flex justify-center">
           <p class="text-4xl">Create an account</p>
         </div>
-        {/* <div class="flex justify-center items-center flex-col gap-2">
+        {
+          /* <div class="flex justify-center items-center flex-col gap-2">
           <Divider>CONTINUE WITH</Divider>
           <div class="flex flex-col gap-1 w-full">
             <Button startIcon={<GoogleIcon />}>Google</Button>
             <Button startIcon={<GithubIcon />}>Github</Button>
             <Button startIcon={<GitlabIcon />}>Gitlab</Button>
           </div>
-        </div> */}
+        </div> */
+        }
         <div class="flex flex-col gap-1 items-center">
           {/* <Divider>OR</Divider> */}
           <form

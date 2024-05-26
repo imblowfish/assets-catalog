@@ -44,4 +44,4 @@ export default async function AssetPage(
       </main>
     </>
   );
-};
+}

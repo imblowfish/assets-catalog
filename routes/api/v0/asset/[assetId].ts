@@ -14,7 +14,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.NotFound,
-        }
+        },
       );
     }
 
@@ -32,7 +32,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.NotFound,
-        }
+        },
       );
     }
 

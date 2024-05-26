@@ -14,12 +14,12 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.BadRequest,
-        }
+        },
       );
     }
 
     const [email, password, username] = atob(
-      authorization.replace("Basic ", "")
+      authorization.replace("Basic ", ""),
     ).split(":");
 
     if (!email || !password || !username) {
@@ -29,7 +29,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.BadRequest,
-        }
+        },
       );
     }
 
@@ -40,7 +40,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.Conflict,
-        }
+        },
       );
     }
 
@@ -51,7 +51,7 @@ export const handler: Handlers = {
         }),
         {
           status: HttpCode.Conflict,
-        }
+        },
       );
     }
 
