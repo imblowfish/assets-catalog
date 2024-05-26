@@ -1,8 +1,8 @@
 import { ComponentChildren } from "preact";
+import type { Asset, User } from "$/data/database/database.ts";
 import { Avatar } from "$/components/Avatar.tsx";
 import { Button } from "$/components/Button.tsx";
 import { PinIcon } from "$/components/Icons.tsx";
-import { Asset, User } from "$/data/database/database.ts";
 
 interface ThumbnailProps {
   sx?: string;

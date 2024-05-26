@@ -1,8 +1,8 @@
+import type { User } from "$/data/database/database.ts";
 import { Avatar } from "$/components/Avatar.tsx";
 import { Input } from "$/components/Input.tsx";
 import { SearchIcon } from "$/components/Icons.tsx";
 import { ActionsButton } from "$/islands/ActionsButton.tsx";
-import { User } from "$/data/database/database.ts";
 
 export interface LogoProps {
   sx?: string;

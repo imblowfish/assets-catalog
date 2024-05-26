@@ -1,6 +1,6 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { FreshContext } from "$fresh/server.ts";
-import { Database, type Session } from "$/data/database/database.ts";
+import { Database, Session } from "$/data/database/database.ts";
 
 export const handler = [
   async (req: Request, ctx: FreshContext<Session>) => {
