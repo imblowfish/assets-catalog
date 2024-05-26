@@ -1,8 +1,8 @@
 import { useCallback } from "preact/compat";
+import type { Asset } from "$/data/database/backend/db_api.ts";
 import { Button } from "$/components/Button.tsx";
 import { ButtonGroup } from "$/components/ButtonGroup.tsx";
 import { DownloadIcon, TrashIcon, XIcon } from "$/components/Icons.tsx";
-import type { Asset } from "$/data/database/backend/db_api.ts";
 
 interface AssetImageProps {
   url: string;

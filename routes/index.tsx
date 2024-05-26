@@ -1,4 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
+import { FreshContext } from "$fresh/server.ts";
+import { HttpCode } from "$/data/http_codes.ts";
+import { Asset, Session, User } from "$/data/database/database.ts";
 import { Header } from "$/components/Header.tsx";
 import {
   GalleryGrid,
@@ -6,9 +9,6 @@ import {
   // GalleryGridItemV2,
 } from "$/components/GalleryGrid.tsx";
 // import { Button } from "$/components/Button.tsx";
-import { FreshContext } from "$fresh/server.ts";
-import { Asset, Session, User } from "$/data/database/database.ts";
-import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function HomePage(
   _req: Request,
@@ -49,7 +49,6 @@ export default async function HomePage(
       </Head>
       <main>
         <Header
-          // search
           showActions
           user={user}
         />

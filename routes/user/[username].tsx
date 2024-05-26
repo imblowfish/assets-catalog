@@ -1,9 +1,9 @@
 import { Head } from "$fresh/runtime.ts";
+import { FreshContext } from "$fresh/server.ts";
+import { HttpCode } from "$/data/http_codes.ts";
+import { Session, User } from "$/data/database/database.ts";
 import { Header } from "$/components/Header.tsx";
 import { AvatarFull } from "$/components/Avatar.tsx";
-import { FreshContext } from "$fresh/server.ts";
-import { Session, User } from "$/data/database/database.ts";
-import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function UserPage(
   _req: Request,
@@ -32,7 +32,10 @@ export default async function UserPage(
         <title>{username}</title>
       </Head>
       <main>
-        <Header /* avatar */ />
+        <Header
+          showActions
+          user={user}
+        />
         <div class="flex flex-col items-center m-4">
           <AvatarFull userUrl={user.htmlUrl} />
           <p class="text-2xl mt-4">{username}</p>

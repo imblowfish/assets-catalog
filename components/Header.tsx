@@ -20,7 +20,7 @@ export const Logo = (props: LogoProps) => {
 };
 
 export interface HeaderProps {
-  search?: boolean;
+  showSearch?: boolean;
   showActions?: boolean;
   user?: User;
 }
@@ -31,7 +31,7 @@ export const Header = (props: HeaderProps) => {
       <div class="h-full flex justify-between items-center ml-4 mr-4">
         <Logo />
         <div class="flex flex-row items-center gap-4">
-          {props.search && (
+          {props.showSearch && (
             <Input
               placeholder="Search"
               endIcon={<SearchIcon />}

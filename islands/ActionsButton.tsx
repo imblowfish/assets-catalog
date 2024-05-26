@@ -2,7 +2,6 @@ import { Button } from "$/components/Button.tsx";
 import { ButtonGroup } from "$/components/ButtonGroup.tsx";
 import { Dropdown, DropdownItem } from "$/components/Dropdown.tsx";
 import { ChevronDownIcon, PlusIcon } from "$/components/Icons.tsx";
-import { User } from "$/data/database/database.ts";
 
 const NewButton = () => {
   return (
@@ -24,10 +23,6 @@ const NewButton = () => {
     </Dropdown>
   );
 };
-
-interface ActionsButtonProps {
-  user: User;
-}
 
 export const ActionsButton = () => {
   return (

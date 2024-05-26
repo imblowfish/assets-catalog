@@ -1,9 +1,9 @@
 import { Head } from "$fresh/runtime.ts";
+import { FreshContext } from "$fresh/server.ts";
+import { HttpCode } from "$/data/http_codes.ts";
+import { Session, User } from "$/data/database/database.ts";
 import { Header } from "$/components/Header.tsx";
 import { CreateNewAsset } from "$/islands/Actions.tsx";
-import { FreshContext } from "$fresh/server.ts";
-import { Session, User } from "$/data/database/database.ts";
-import { HttpCode } from "$/data/http_codes.ts";
 
 export default async function NewAsset(
   _req: Request,
@@ -35,7 +35,7 @@ export default async function NewAsset(
       </Head>
       <main>
         <Header
-          // showActions
+          showActions
           user={user}
         />
         <CreateNewAsset username={user.username} />
