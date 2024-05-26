@@ -26,8 +26,6 @@ export const handler: Handlers = {
       name: username,
     });
 
-    // TODO: Add check if file already exists for versioning
-
     await Storage.object.create({
       bucket: username,
       name: file.name,

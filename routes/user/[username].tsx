@@ -39,7 +39,6 @@ export default async function UserPage(
         <div class="flex flex-col items-center m-4">
           <AvatarFull userUrl={user.htmlUrl} />
           <p class="text-2xl mt-4">{username}</p>
-          {/* TODO: Add information about me */}
         </div>
       </main>
     </>

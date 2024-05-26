@@ -12,7 +12,6 @@ export type User = Omit<UserUnsafe, "password" | "email">;
 export interface Session {
   id: string;
   username: string;
-  // TODO: Add session expiration
 }
 
 export interface Asset {

@@ -55,8 +55,6 @@ export const handler: Handlers = {
       );
     }
 
-    // TODO: Add check if generated UUID is already exists
-    // TODO: Make uuid a little shorter or user a real number of a user in the app
     await Database.users.insert({
       id: crypto.randomUUID(),
       email,

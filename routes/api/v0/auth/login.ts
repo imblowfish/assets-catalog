@@ -57,7 +57,6 @@ export const handler: Handlers = {
       );
     }
 
-    // TODO: Add check if generated id is already exists
     const sessionId = crypto.randomUUID();
 
     await Database.sessions.insert({
@@ -74,7 +73,7 @@ export const handler: Handlers = {
       sameSite: "Lax", // this is important to prevent CSRF attacks
       domain: url.hostname,
       path: "/",
-      secure: true, // TODO: Enable only in case of production
+      secure: true,
       httpOnly: true,
     });
 
