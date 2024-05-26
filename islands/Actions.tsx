@@ -2,46 +2,72 @@ import { useCallback, useRef } from "preact/hooks";
 import { Button } from "$/components/Button.tsx";
 import { Input } from "$/components/Input.tsx";
 import { FileUploader } from "$/islands/FileUploader.tsx";
+import { HttpCode } from "$/data/http_codes.ts";
+import {
+  AssetCreationRequest,
+  FileCreationResponse,
+} from "$/data/responses.ts";
 
-export function CreateNewAsset() {
-  const formRef = useRef<HTMLFormElement | null>(null);
-  const assetTitleRef = useRef<HTMLInputElement | null>(null);
-  const assetDescriptionRef = useRef<HTMLInputElement | null>(null);
+interface CreateNewAssetProps {
+  username: string;
+}
 
-  const uploadAsset = useCallback(async () => {
-    if (!formRef.current) {
-      return;
+export function CreateNewAsset(props: CreateNewAssetProps) {
+  const inputTitleRef = useRef<HTMLInputElement | null>(null);
+  const inputDescriptionRef = useRef<HTMLInputElement | null>(null);
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
+
+  const onSubmitCallback = useCallback(async () => {
+    if (
+      !inputTitleRef.current ||
+      !inputDescriptionRef.current ||
+      !inputFileRef.current
+    ) {
+      throw new Error("Can't get all necessary data to submit");
     }
 
-    const fileFormData = new FormData(formRef.current);
-    fileFormData.delete("title");
-    fileFormData.delete("description");
-
-    let resp = await fetch("/api/v0/storage", {
-      method: "POST",
-      body: fileFormData,
-    });
-
-    if (resp.status !== 200) {
-      console.error(`API returned ${resp.status}: ${await resp.text()}`);
-      return;
+    const title = inputTitleRef.current.value;
+    const description = inputDescriptionRef.current.value;
+    const files = inputFileRef.current.files;
+    if (!files) {
+      throw new Error("User didn't choose any file");
     }
+    const file = files[0];
 
-    const assetFormData = new FormData(formRef.current);
-    assetFormData.delete("file");
-    assetFormData.set("url", ((await resp.json()) as { url: string }).url);
+    const formData = new FormData();
+    formData.set("file", file);
 
-    resp = await fetch(`/api/v0/assets`, {
-      method: "POST",
-      body: assetFormData,
-    });
-
-    if (resp.status != 200) {
-      console.error(`API returned ${resp.status}`);
-      return;
+    let resp = await fetch(
+      `http://localhost:8000/api/v0/user/${props.username}/files`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    if (resp.status !== HttpCode.Created) {
+      throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
     }
+    const fileResponse = (await resp.json()) as FileCreationResponse;
 
-    globalThis.location.href = "/";
+    resp = await fetch(
+      `http://localhost:8000/api/v0/user/${props.username}/assets`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            title,
+            description,
+            objectUrl: fileResponse.url,
+          } satisfies AssetCreationRequest,
+        ),
+      },
+    );
+    if (resp.status !== HttpCode.Created) {
+      throw new Error(`API returned [${resp.status}]: ${await resp.text()}`);
+    }
   }, []);
 
   return (
@@ -49,29 +75,33 @@ export function CreateNewAsset() {
       <div class="flex flex-col w-[50%] gap-8">
         <p class="text-2xl">Create a new asset</p>
         <form
-          ref={formRef}
           class="flex flex-col gap-4"
           onSubmit={(event) => {
             event.preventDefault();
-            uploadAsset().catch((err) => {
-              console.error(err);
-            });
+            onSubmitCallback()
+              .then(() => {
+                globalThis.location.href = "/";
+              })
+              .catch((err) => {
+                throw err;
+              });
           }}
         >
           <Input
-            ref={assetTitleRef}
+            ref={inputTitleRef}
             required
             name="title"
-            placeholder="Asset title"
+            placeholder="Title"
           />
           <Input
-            ref={assetDescriptionRef}
+            ref={inputDescriptionRef}
             name="description"
-            placeholder="Description(optional)"
+            placeholder="Description"
           />
           <FileUploader
-            name="file"
+            ref={inputFileRef}
             required
+            name="file"
           />
           <div class="flex flex-row content-end justify-end">
             <Button type="submit">Create asset</Button>

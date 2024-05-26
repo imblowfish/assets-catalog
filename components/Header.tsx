@@ -1,3 +1,4 @@
+import type { User } from "$/data/database/database.ts";
 import { Avatar } from "$/components/Avatar.tsx";
 import { Input } from "$/components/Input.tsx";
 import { SearchIcon } from "$/components/Icons.tsx";
@@ -19,9 +20,9 @@ export const Logo = (props: LogoProps) => {
 };
 
 export interface HeaderProps {
-  search?: boolean;
-  actions?: boolean;
-  avatar?: boolean;
+  showSearch?: boolean;
+  showActions?: boolean;
+  user?: User;
 }
 
 export const Header = (props: HeaderProps) => {
@@ -30,14 +31,14 @@ export const Header = (props: HeaderProps) => {
       <div class="h-full flex justify-between items-center ml-4 mr-4">
         <Logo />
         <div class="flex flex-row items-center gap-4">
-          {props.search && (
+          {props.showSearch && (
             <Input
               placeholder="Search"
               endIcon={<SearchIcon />}
             />
           )}
-          {props.actions && <ActionsButton />}
-          {props.avatar && <Avatar />}
+          {props.showActions && <ActionsButton />}
+          {props.user && <Avatar userUrl={props.user.htmlUrl} />}
         </div>
       </div>
     </header>

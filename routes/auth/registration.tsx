@@ -1,7 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { Handlers } from "$fresh/server.ts";
 import { Header } from "$/components/Header.tsx";
-import { Login } from "$/islands/Login.tsx";
+import { Registration } from "$/islands/Registration.tsx";
 import { HttpCode } from "$/data/http_codes.ts";
 
 export const handler: Handlers = {
@@ -14,15 +14,15 @@ export const handler: Handlers = {
   },
 };
 
-export default function LoginPage() {
+export default function RegistrationPage() {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Registration</title>
       </Head>
       <main>
         <Header />
-        <Login />
+        <Registration />
       </main>
     </>
   );

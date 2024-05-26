@@ -1,5 +1,6 @@
 import { ComponentChildren } from "preact";
-// import { Avatar } from "$/components/Avatar.tsx";
+import type { Asset, User } from "$/data/database/database.ts";
+import { Avatar } from "$/components/Avatar.tsx";
 import { Button } from "$/components/Button.tsx";
 import { PinIcon } from "$/components/Icons.tsx";
 
@@ -22,7 +23,7 @@ const Thumbnail = (props: ThumbnailProps) => {
 interface GalleryGridOverlayProps {
   sx?: string;
   title: string;
-  // author: string;
+  user: User;
 }
 
 const GridOverlay = (props: GalleryGridOverlayProps) => {
@@ -30,10 +31,13 @@ const GridOverlay = (props: GalleryGridOverlayProps) => {
     <div class={props.sx}>
       <div class="bottom-0 left-0 w-full h-full opacity-70 absolute bg-gradient-to-t from-black" />
       <div class="bottom-1 w-full absolute flex flex-row">
-        {/* <Avatar sx="ml-1" /> */}
+        <Avatar
+          sx="ml-1"
+          userUrl={props.user.htmlUrl}
+        />
         <div class="ml-1">
           <p class="text-[16px] text-white font-semibold">{props.title}</p>
-          {/* <p class="text-[12px] text-white">{props.author}</p> */}
+          <p class="text-[12px] text-white">{props.user.username}</p>
         </div>
       </div>
     </div>
@@ -52,10 +56,13 @@ const GridOverlayV2 = (props: GalleryGridOverlayProps) => {
         </div>
       </div>
       <div class="bottom-0 w-full h-fit bg-white absolute flex flex-row items-center">
-        {/* <Avatar sx="ml-1" /> */}
+        <Avatar
+          sx="ml-1"
+          userUrl={props.user.htmlUrl}
+        />
         <div class="ml-1">
           <p class="text-[16px] text-black font-semibold">{props.title}</p>
-          {/* <p class="text-[12px] text-black">{props.author}</p> */}
+          <p class="text-[12px] text-black">{props.user.username}</p>
         </div>
       </div>
     </div>
@@ -63,24 +70,22 @@ const GridOverlayV2 = (props: GalleryGridOverlayProps) => {
 };
 
 export interface GalleryGridItemProps {
-  id: string;
-  title: string;
-  // author: string;
-  thumbnailUrl: string;
+  asset: Asset;
+  user: User;
 }
 
 export const GalleryGridItem = (props: GalleryGridItemProps) => {
   return (
-    <a href={`/assets/${props.id}`}>
+    <a href={props.asset.htmlUrl}>
       <div class="group rounded-md cursor-pointer select-none overflow-hidden w-60 h-60 relative">
         <Thumbnail
           sx="transition duration-500 easy-in-out group-hover:scale-110"
-          url={props.thumbnailUrl}
+          url={props.asset.objectUrl}
         />
         <GridOverlay
           sx="opacity-0 transition duration-300 group-hover:opacity-100"
-          title={props.title}
-          // author={props.author}
+          title={props.asset.title}
+          user={props.user}
         />
       </div>
     </a>
@@ -90,15 +95,15 @@ export const GalleryGridItem = (props: GalleryGridItemProps) => {
 export const GalleryGridItemV2 = (props: GalleryGridItemProps) => {
   return (
     <div class="group rounded-md border border-black cursor-pointer select-none overflow-hidden w-60 h-60 relative">
-      <a href={`/assets/${props.id}`}>
+      <a href={props.asset.htmlUrl}>
         <Thumbnail
           sx="transition duration-500 easy-in-out group-hover:scale-110"
-          url={props.thumbnailUrl}
+          url={props.asset.objectUrl}
         />
       </a>
       <GridOverlayV2
-        title={props.title}
-        // author={props.author}
+        title={props.asset.title}
+        user={props.user}
       />
     </div>
   );

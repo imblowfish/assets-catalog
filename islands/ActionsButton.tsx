@@ -15,7 +15,7 @@ const NewButton = () => {
     >
       <DropdownItem
         onClick={() => {
-          location.replace("/new/asset");
+          globalThis.location.href = "/new/asset";
         }}
       >
         New asset
