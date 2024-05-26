@@ -1,6 +1,6 @@
 /// <reference lib="deno.unstable" />
 import { load } from "$std/dotenv/mod.ts";
-import {
+import type {
   Asset,
   DatabaseBackend,
   Session,
