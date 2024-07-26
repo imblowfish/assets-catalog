@@ -1,268 +1,651 @@
-// import { createHandler, ServeHandlerInfo } from "$fresh/server.ts";
-// import type { Asset } from "$/data/database/database.ts";
-// import manifest from "$/fresh.gen.ts";
-// import {
-//   assertEquals,
-//   assertExists,
-//   assertInstanceOf,
-//   assertMatch,
-//   assertRejects,
-// } from "$std/testing/asserts.ts";
-// import * as path from "$std/path/mod.ts";
+import { createHandler, ServeHandlerInfo } from "$fresh/server.ts";
+import manifest from "$/fresh.gen.ts";
+import config from "$/fresh.config.ts";
+import {
+  assertEquals,
+  assertExists,
+  assertObjectMatch,
+} from "$std/testing/asserts.ts";
+import { ErrorCode } from "$/data/error_codes.ts";
+import { HttpCode } from "$/data/http_codes.ts";
+import { Asset } from "$/data/database/database.ts";
+import { AssetCreationRequest } from "$/data/responses.ts";
 
-// const dirname = path.dirname(path.fromFileUrl(import.meta.url));
-// const databasePath = Deno.env.get("DATABASE_PATH")!;
+const connectionInfo = {
+  remoteAddr: {
+    hostname: "127.0.0.1",
+    port: 8000,
+    transport: "tcp",
+  },
+} satisfies ServeHandlerInfo;
 
-// const connectionInfo: ServeHandlerInfo = {
-//   remoteAddr: {
-//     hostname: "127.0.0.1",
-//     port: 8000,
-//     transport: "tcp",
-//   },
-// };
+Deno.test("/asset", async (t) => {
+  const handler = await createHandler(manifest, config);
 
-// Deno.test("/assets", async (t) => {
-//   const testAssetTitle = "Test asset title";
-//   const testAssetDescription = "Test asset description";
-//   const testAssetUrl = "http://some-url/file.png";
+  await t.step("GET", async (t) => {
+    await t.step("Unknown asset", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/asset/${crypto.randomUUID()}`,
+        ),
+        connectionInfo,
+      );
 
-//   const handler = await createHandler(manifest);
+      assertEquals(resp.status, 404);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_ASSET_NOT_FOUND,
+      });
+    });
+  });
 
-//   await t.step("Get assets when there are no any asset", async () => {
-//     const resp = await handler(
-//       new Request(`http://${connectionInfo.remoteAddr.hostname}/api/v0/assets`),
-//       connectionInfo
-//     );
+  await t.step("DELETE", async (t) => {
+    await t.step("Unknown asset", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/asset/${crypto.randomUUID()}`,
+        ),
+        connectionInfo,
+      );
 
-//     assertEquals(resp.status, 200);
-//     assertEquals(await resp.json(), []);
-//   });
+      assertEquals(resp.status, HttpCode.NotFound);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_ASSET_NOT_FOUND,
+      });
+    });
+  });
+});
 
-//   let asset: Asset | null = null;
+Deno.test("/auth", async (t) => {
+  const handler = await createHandler(manifest, config);
 
-//   await t.step("Add a new asset", async () => {
-//     const bodyContent = new FormData();
-//     bodyContent.append("title", testAssetTitle);
-//     bodyContent.append("description", testAssetDescription);
-//     bodyContent.append("url", testAssetUrl);
+  const email = "username@example.com";
+  const password = "testPassword123";
+  const username = "testUsername";
 
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets`,
-//         {
-//           method: "POST",
-//           body: bodyContent,
-//         }
-//       ),
-//       connectionInfo
-//     );
+  await t.step("/registration", async (t) => {
+    await t.step("Correct registration", async () => {
+      let resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}`,
+        ),
+        connectionInfo,
+      );
 
-//     const jsonResp = (await resp.json()) as Asset;
+      assertEquals(resp.status, HttpCode.NotFound);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_USER_USERNAME_IS_UNKNOWN,
+      });
 
-//     assertEquals(resp.status, 200);
-//     assertExists(jsonResp.id);
-//     assertEquals(jsonResp.title, testAssetTitle);
-//     assertEquals(jsonResp.description, testAssetDescription);
-//     assertEquals(jsonResp.url, testAssetUrl);
+      resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${
+                btoa(
+                  `${email}:${password}:${username}`,
+                )
+              }`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//     asset = { ...jsonResp };
-//   });
+      assertEquals(resp.status, HttpCode.Created);
 
-//   await t.step("Get when asset list is not empty", async () => {
-//     const resp = await handler(
-//       new Request(`http://${connectionInfo.remoteAddr.hostname}/api/v0/assets`),
-//       connectionInfo
-//     );
+      resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}`,
+        ),
+        connectionInfo,
+      );
 
-//     const jsonResp = await resp.json();
+      assertEquals(resp.status, HttpCode.Ok);
+    });
 
-//     assertEquals(resp.status, 200);
-//     assertInstanceOf(jsonResp, Array);
-//     assertEquals(jsonResp.length, 1);
-//     assertEquals(jsonResp[0], asset);
-//   });
+    await t.step("Authorization header is empty", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+          },
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Get specific asset by id", async () => {
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`
-//       ),
-//       connectionInfo
-//     );
+      assertEquals(resp.status, HttpCode.BadRequest);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_EMPTY,
+      });
+    });
 
-//     assertEquals(resp.status, 200);
-//     assertEquals(await resp.json(), asset);
-//   });
+    await t.step("Authorization header without email", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${password}:${username}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Update asset by id", async () => {
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`,
-//         {
-//           method: "PATCH",
-//           body: JSON.stringify({
-//             title: "New test asset title",
-//             description: "New test asset description",
-//           }),
-//         }
-//       ),
-//       connectionInfo
-//     );
+      assertEquals(resp.status, HttpCode.BadRequest);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_CREDENTIALS_ARE_INCORRECT,
+      });
+    });
 
-//     assertEquals(resp.status, 200);
-//     asset = (await resp.json()) as Asset;
-//     assertEquals(asset.title, "New test asset title");
-//     assertEquals(asset.description, "New test asset description");
-//   });
+    await t.step("Authorization header without password", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${email}:${username}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   // await t.step("Get asset preview by id", async () => {
-//   //   const resp = await handler(
-//   //     new Request(
-//   //       `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/${asset?.id}`,
-//   //     ),
-//   //     connectionInfo,
-//   //   );
+      assertEquals(resp.status, HttpCode.BadRequest);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_CREDENTIALS_ARE_INCORRECT,
+      });
+    });
 
-//   //   assertEquals(resp.status, 200);
-//   // });
+    await t.step("Authorization header without username", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${email}:${password}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   // await t.step("Get preview for a non-existent asset", async () => {
-//   //   const resp = await handler(
-//   //     new Request(
-//   //       `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/preview/nonExistentId`,
-//   //     ),
-//   //     connectionInfo,
-//   //   );
+      assertEquals(resp.status, HttpCode.BadRequest);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_CREDENTIALS_ARE_INCORRECT,
+      });
+    });
 
-//   //   assertEquals(resp.status, 404);
-//   // });
+    await t.step("Email already in use", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${
+                btoa(
+                  `${email}:${password}:${username}`,
+                )
+              }`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Delete asset by id", async () => {
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`,
-//         { method: "DELETE" }
-//       ),
-//       connectionInfo
-//     );
+      assertEquals(resp.status, HttpCode.Conflict);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_EMAIL_ALREADY_IN_USE,
+      });
+    });
 
-//     assertEquals(resp.status, 200);
-//     assertEquals(await resp.json(), {
-//       message: `Asset '${asset?.id}' deleted`,
-//     });
-//     await assertRejects(
-//       () => {
-//         return Deno.stat(`${Deno.env.get("STORAGE_PATH")!}/${asset?.id}`);
-//       },
-//       Error,
-//       "No such file or directory"
-//     );
-//   });
+    await t.step("Username already in use", async () => {
+      const modifiedEmail = `modified_${email}`;
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/registration`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${
+                btoa(
+                  `${modifiedEmail}:${password}:${username}`,
+                )
+              }`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Get a non-existent asset", async () => {
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`
-//       ),
-//       connectionInfo
-//     );
+      assertEquals(resp.status, HttpCode.Conflict);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_USERNAME_ALREADY_IN_USE,
+      });
+    });
+  });
 
-//     assertEquals(resp.status, 404);
-//     assertEquals(await resp.json(), {
-//       message: `Can't find asset with id '${asset?.id}'`,
-//     });
-//   });
+  await t.step("/login", async (t) => {
+    await t.step("Correct login", async () => {
+      let resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}`,
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Update a non-existent asset", async () => {
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`,
-//         {
-//           method: "PATCH",
-//           body: JSON.stringify({
-//             title: "New test asset title",
-//             description: "New test asset description",
-//           }),
-//         }
-//       ),
-//       connectionInfo
-//     );
+      assertEquals(resp.status, HttpCode.Ok);
 
-//     assertEquals(resp.status, 404);
-//     assertEquals(await resp.json(), {
-//       message: `Can't find asset with id '${asset?.id}'`,
-//     });
-//   });
+      resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${email}:${password}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Delete a non-existent asset", async () => {
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/assets/${asset?.id}`,
-//         { method: "DELETE" }
-//       ),
-//       connectionInfo
-//     );
+      assertEquals(resp.status, HttpCode.Ok);
+    });
 
-//     assertEquals(resp.status, 404);
-//     assertEquals(await resp.json(), {
-//       message: `Can't find asset with id '${asset?.id}'`,
-//     });
-//   });
+    await t.step("Authorization header is empty", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+          },
+        ),
+        connectionInfo,
+      );
 
-//   Deno.remove(databasePath, { recursive: true });
-// });
+      assertEquals(resp.status, HttpCode.Unauthorized);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_EMPTY,
+      });
+    });
 
-// Deno.test("/storage", async (t) => {
-//   const testFile = new File(
-//     [await Deno.readFile(`${dirname}/null.png`)],
-//     `null.png`
-//   );
+    await t.step("Authorization header without email", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${password}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   const handler = await createHandler(manifest);
+      assertEquals(resp.status, HttpCode.Unauthorized);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_CREDENTIALS_ARE_INCORRECT,
+      });
+    });
 
-//   let savedFileUrl = "";
+    await t.step("Authorization header without password", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${email}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//   await t.step("Upload file to storage", async () => {
-//     const formData = new FormData();
-//     formData.append("file", testFile);
+      assertEquals(resp.status, HttpCode.Unauthorized);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_HEADER_CREDENTIALS_ARE_INCORRECT,
+      });
+    });
 
-//     const resp = await handler(
-//       new Request(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/storage`,
-//         {
-//           method: "POST",
-//           body: formData,
-//         }
-//       ),
-//       connectionInfo
-//     );
+    await t.step("Unknown email", async () => {
+      const modifiedEmail = `modified_${email}`;
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${modifiedEmail}:${password}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//     const jsonResp = (await resp.json()) as { url: string };
-//     assertEquals(resp.status, 200);
-//     assertMatch(
-//       jsonResp.url,
-//       new RegExp(
-//         `http://${connectionInfo.remoteAddr.hostname}/api/v0/storage/.*_${testFile.name}`
-//       )
-//     );
+      assertEquals(resp.status, HttpCode.Unauthorized);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_EMAIL_UNKNOWN,
+      });
+    });
 
-//     savedFileUrl = jsonResp.url;
-//     const savedFileName = jsonResp.url.split("/").at(-1);
+    await t.step("Unknown email", async () => {
+      const modifiedEmail = `modified_${email}`;
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${modifiedEmail}:${password}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//     const stat = await Deno.stat(
-//       `${Deno.env.get("STORAGE_PATH")!}/${savedFileName}`
-//     );
-//     assertEquals(stat.isFile, true);
-//   });
+      assertEquals(resp.status, HttpCode.Unauthorized);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_EMAIL_UNKNOWN,
+      });
+    });
 
-//   await t.step("Download file from storage", async () => {
-//     const resp = await handler(
-//       new Request(savedFileUrl, {
-//         method: "GET",
-//       }),
-//       connectionInfo
-//     );
+    await t.step("Incorrect password", async () => {
+      const modifiedPassword = `modified_${password}`;
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`${email}:${modifiedPassword}`)}`,
+            },
+          },
+        ),
+        connectionInfo,
+      );
 
-//     assertEquals(resp.status, 200);
-//   });
-// });
+      assertEquals(resp.status, HttpCode.Unauthorized);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_AUTH_PASSWORD_IS_INCORRECT,
+      });
+    });
+  });
+
+  await t.step("/logout", async (t) => {
+    await t.step("Correct logout", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/auth/logout`,
+          {
+            method: "POST",
+          },
+        ),
+        connectionInfo,
+      );
+
+      assertEquals(resp.status, HttpCode.SeeOther);
+    });
+  });
+});
+
+Deno.test("/user", async (t) => {
+  const handler = await createHandler(manifest, config);
+
+  const username = "testUsername";
+
+  await t.step("GET", async (t) => {
+    await t.step("Correct request", async () => {
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}`,
+        ),
+        connectionInfo,
+      );
+
+      assertEquals(resp.status, HttpCode.Ok);
+    });
+
+    await t.step("Unknown username", async () => {
+      const modifiedUsername = `modified_${username}`;
+      const resp = await handler(
+        new Request(
+          `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${modifiedUsername}`,
+        ),
+        connectionInfo,
+      );
+
+      assertEquals(resp.status, HttpCode.NotFound);
+      assertEquals(await resp.json(), {
+        message: ErrorCode.API_USER_USERNAME_IS_UNKNOWN,
+      });
+    });
+  });
+
+  await t.step("/[username]", async (t) => {
+    const file = new File([new Uint8Array([20, 30])], "test-file-name");
+
+    await t.step("/files", async (t) => {
+      await t.step("POST", async () => {
+        const formData = new FormData();
+        formData.set("file", file);
+
+        const resp = await handler(
+          new Request(
+            `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/files`,
+            {
+              method: "POST",
+              body: formData,
+            },
+          ),
+          connectionInfo,
+        );
+        assertEquals(resp.status, HttpCode.Created);
+        assertObjectMatch(await resp.json(), {
+          name: file.name,
+          size: file.size,
+        });
+      });
+    });
+
+    await t.step("/file", async (t) => {
+      await t.step("[filename]", async (t) => {
+        await t.step("GET", async () => {
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/file/${file.name}`,
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.Ok);
+        });
+
+        await t.step("DELETE", async () => {
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/file/${file.name}`,
+              {
+                method: "DELETE",
+              },
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.Ok);
+        });
+      });
+    });
+
+    await t.step("/assets", async (t) => {
+      const assetTestData: AssetCreationRequest = {
+        title: file.name,
+        description: "Some test description",
+        objectUrl: "http://test-host-object-url",
+      };
+
+      await t.step("POST", async (t) => {
+        await t.step("Correct asset creation", async () => {
+          let resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/file/${file.name}`,
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.Ok);
+
+          resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/assets`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(assetTestData),
+              },
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.Created);
+
+          const asset = (await resp.json()) as Asset;
+          assertExists(asset.id);
+          assertObjectMatch(asset, {
+            title: assetTestData.title,
+            description: assetTestData.description,
+            collectionId: "default",
+            username: username,
+            objectUrl: assetTestData.objectUrl,
+          });
+          assertExists(asset.url);
+          assertExists(asset.htmlUrl);
+        });
+
+        await t.step("Unknown username", async () => {
+          const modifiedUsername = `modified_${username}`;
+
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${modifiedUsername}/assets`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(assetTestData),
+              },
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.NotFound);
+          assertEquals(await resp.json(), {
+            message: ErrorCode.API_USER_USERNAME_IS_UNKNOWN,
+          });
+        });
+
+        await t.step("Empty asset title", async () => {
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/assets`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  ...assetTestData,
+                  title: undefined,
+                }),
+              },
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.BadRequest);
+          assertEquals(await resp.json(), {
+            message: ErrorCode.API_ASSET_EMPTY_TITLE,
+          });
+        });
+
+        await t.step("Empty objectUrl", async () => {
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/assets`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  ...assetTestData,
+                  objectUrl: undefined,
+                }),
+              },
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.BadRequest);
+          assertEquals(await resp.json(), {
+            message: ErrorCode.API_ASSET_OBJECT_URL_IS_EMPTY,
+          });
+        });
+      });
+
+      await t.step("GET", async (t) => {
+        await t.step("Correct request", async () => {
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${username}/assets`,
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.Ok);
+
+          const assets = (await resp.json()) as Asset[];
+          assertEquals(assets.length, 1);
+          const asset = assets[0];
+          assertExists(asset.id);
+          assertObjectMatch(asset, {
+            title: assetTestData.title,
+            description: assetTestData.description,
+            collectionId: "default",
+            username: username,
+            objectUrl: assetTestData.objectUrl,
+          });
+          assertExists(asset.url);
+          assertExists(asset.htmlUrl);
+        });
+
+        await t.step("Unknown username", async () => {
+          const modifiedUsername = `modified_${username}`;
+
+          const resp = await handler(
+            new Request(
+              `http://${connectionInfo.remoteAddr.hostname}/api/v0/user/${modifiedUsername}/assets`,
+            ),
+            connectionInfo,
+          );
+
+          assertEquals(resp.status, HttpCode.NotFound);
+          assertEquals(await resp.json(), {
+            message: ErrorCode.API_USER_USERNAME_IS_UNKNOWN,
+          });
+        });
+      });
+    });
+  });
+});

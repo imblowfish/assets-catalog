@@ -5,7 +5,7 @@
     "update": "deno run -A -r https://fresh.deno.dev/update .",
     "build": "deno run --unstable-kv -A dev.ts build",
     "preview": "deno run --unstable-kv -A main.ts",
-    "test": "DATABASE_PATH=./tmp/test/kv/asset-catalog STORAGE_PATH=./tmp/test/storage deno test --unstable-kv -A"
+    "test": "deno test --unstable-kv -A --env=.env.test --quiet"
   },
   "lint": {
     "include": [

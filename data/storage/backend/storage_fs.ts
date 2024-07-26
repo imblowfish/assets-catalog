@@ -1,18 +1,10 @@
-import { load } from "$std/dotenv/mod.ts";
 import {
   StorageBackend,
   StorageBucket,
   StorageObject,
 } from "$/data/storage/backend/storage_api.ts";
 
-const config = await load({
-  envPath: ".env",
-  defaultsPath: ".env.defaults",
-  examplePath: ".env.example",
-  export: true,
-});
-
-const storagePath = Deno.env.get("STORAGE_PATH") || config["STORAGE_PATH"];
+const storagePath = Deno.env.get("STORAGE_PATH") || "";
 
 console.log("Storage initialization");
 console.log(`STORAGE_PATH=${storagePath}`);

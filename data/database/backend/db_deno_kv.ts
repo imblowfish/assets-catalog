@@ -1,5 +1,5 @@
 /// <reference lib="deno.unstable" />
-import { load } from "$std/dotenv/mod.ts";
+import * as path from "$std/path/mod.ts";
 import type {
   Asset,
   DatabaseBackend,
@@ -8,18 +8,16 @@ import type {
   UserUnsafe,
 } from "$/data/database/backend/db_api.ts";
 
-const config = await load({
-  envPath: ".env",
-  defaultsPath: ".env.defaults",
-  examplePath: ".env.example",
-  export: true,
-});
+const databasePath = Deno.env.get("DATABASE_PATH") || "";
 
-const databasePath = Deno.env.get("DATABASE_PATH") || config["DATABASE_PATH"];
-
-console.log("Database initialization");
+console.log("DenoKv database initialized");
 console.log(`DATABASE_PATH=${databasePath}`);
 
+if (databasePath !== ":memory:") {
+  await Deno.mkdir(path.dirname(databasePath), {
+    recursive: true,
+  });
+}
 const kv = await Deno.openKv(databasePath);
 
 async function insertUser(user: UserUnsafe) {
