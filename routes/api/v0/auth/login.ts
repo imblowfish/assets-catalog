@@ -46,7 +46,7 @@ export const handler: Handlers = {
       );
     }
 
-    if (!bcrypt.compare(password, user.password)) {
+    if (!(await bcrypt.compare(password, user.password))) {
       return new Response(
         JSON.stringify({
           message: ErrorCode.API_AUTH_PASSWORD_IS_INCORRECT,
